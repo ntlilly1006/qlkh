@@ -45,8 +45,7 @@ public class Manager {
                 }
                 System.out.print("Nhap ID san pham: ");
                 String proID = scan.nextLine();
-//            int index = productList.find(proID);
-                int index = 0;
+                int index = productList.find(proID);
                 if (-1 == index) {
 //                tạo sp mới trong productList
                 }
@@ -61,7 +60,8 @@ public class Manager {
                 }
                 if (-1 != addLink(posID, proID, amount, date)) {
                     System.out.println("---Nhap thanh cong---");
-//                    Sửa số lượng sp trong productList;
+                    index = productList.find(proID);
+                    productList.modify(proID, productList.get(index).getAmount() + (long) amount);
                 } else {
                     System.out.println("---Nhap khong thanh cong---");
                 }
@@ -86,8 +86,7 @@ public class Manager {
             }
             System.out.print("Nhap ID san pham: ");
             String proID = scan.nextLine();
-//            int index = productList.find(proID);
-            int index = 0;
+            int index = productList.find(proID);
             if (-1 == index) {
 //                tạo sp mới trong productList
             }
@@ -102,8 +101,9 @@ public class Manager {
             }
             if (-1 != addLink(posID, proID, amount, date)) {
                 System.out.println("---Nhap thanh cong---");
-//                Sửa số lượng sp trong productList;                
-//                invoice.addMoreProduct(proID, lay unit trong productlist , amount, lay don gia)
+                index = productList.find(proID);
+                productList.modify(proID, productList.get(index).getAmount() + (long) amount);
+                invoice.addMoreProduct(proID, productList.get(index).getUnit(), amount, productList.get(index).getPrice());
             } else {
                 System.out.println("---Nhap khong thanh cong---");
             }
@@ -111,13 +111,13 @@ public class Manager {
         if (seri != 1) {
             System.out.println("---HOAN TAT NHAP HANG---");
             return 0;
-        } 
+        }
         return -1;
     }
 
     public int exportPD() {
 //        cls;
-        System.out.println("---NHAP HANG---");
+        System.out.println("---XUAT HANG---");
 
         return 0;
     }
