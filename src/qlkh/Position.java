@@ -1,7 +1,5 @@
 package qlkh;
 
-import java.util.Scanner;
-
 /**
  * DONE
  *
@@ -12,8 +10,9 @@ public class Position {
     private String positionID;     //mã vi tri A01 B05 ...
     private char area;             //khu vực ABC...
     private short shelf;           //kệ 123...
-    private boolean status;        //able true & enable false ?
+    private boolean status;        //empty true & full false ?
 
+// --Constructor----------------------------------------------------------------    
     public Position() {
     }
 
@@ -36,29 +35,37 @@ public class Position {
         }
         this.positionID = at + st;
     }
-    //------------------------------------------------------------------------------    
 
+    public Position(Position other) {
+        this.positionID = other.positionID;
+        this.area = other.area;
+        this.shelf = other.shelf;
+        this.status = other.status;
+    }
+
+// -----------------------------------------------------------------------------    
+// --Console: Enter a position by ID--
     public void enter() {
-        Scanner scan = new Scanner(System.in);
-        System.out.printf("Nhap ma khu vuc (ABC...): ");
-        area = scan.next().charAt(0);
-        System.out.printf("Nhap ma ke hang (123...): ");
-        shelf = scan.nextShort();
-        this.status = true;
-        String at = String.valueOf(area);
-        String st = String.valueOf(shelf);
-        if (shelf < 10) {
-            st = "0" + st;
+        System.out.println("ID vi tri ke hang co dang X00, voi X la ky tu in hoa trong bang chu cai tieng Anh, 00 la so thu tu cua ke hang");
+        System.out.print("Nhap ID: ");
+        positionID = Tools.scan.nextLine();
+        while (!Tools.isPositionID(positionID)) {
+            System.out.print("Nhap ID: ");
+            positionID = Tools.scan.nextLine();
         }
-        this.positionID = at + st;
-        System.out.println("ID ke hang: " + positionID);
+
+        area = positionID.charAt(0);
+        String temp = positionID.substring(1);
+        shelf = (short) Integer.parseInt(temp);
+        status = true;
     }
 
-    public void display() {//   |     A00     |       A       |      0       |     Trong	|
-        System.out.println("|     " + positionID + "     |      " + area + "      |     " + shelf + "      |     " + ((status) ? "Trong" : "Day") + "\t|");
+    @Override
+    public String toString() {
+        return positionID + "," + status + "\n";
     }
-//--Get-Set---------------------------------------------------------------------
 
+// --Getter-Setter--------------------------------------------------------------
     public String getID() {
         return positionID;
     }
