@@ -1,8 +1,16 @@
 package qlkh;
 
+/**
+ *
+ * @author Lilly
+ */
 public class Main {
+
     public static void main(String[] args) {
-        Manager manager = new Manager();
-        Display.mainMenu(manager);
+        PositionList positionList = new PositionList();
+//        ProductList productList;
+//        InvoiceList invoiceList;
+//        Display.mainMenu();
     }
+    
 }

@@ -1,6 +1,6 @@
 package qlkh;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *
@@ -28,36 +28,27 @@ public class Tools {
         
         return true;
     }
+    // --ProductID--
+    public static boolean isProductID(String productID) {
+        
+        return true;
+    }
       
-    // --InvoiceID check--X0000000--
+    // --InvoiceID--X0000000--
     public static boolean isInvoiceID(String invoiceID) {
-//        if (invoiceID.length() != 3) 
-//            return false;
-//        
-//        char area = positionID.charAt(0);
-//        char shelf1 = positionID.charAt(1);
-//        char shelf2 = positionID.charAt(2);
-//        if (!( ('A' <= area && area <= 'Z') 
-//            && ('0' <= shelf1 && shelf1 <= '9') 
-//            && ('0' <= shelf2 && shelf2 <= '9') ))
-//            return false;
-//        
+   
         return true;
     }
     
-    // --Date format check--X0000000--
+    // --Unit--Cai-Chiec--
+    public static boolean isUnit(String unit) {
+        
+        return true;
+    }
+    
+    // --Date format--dd/MM/yyyy--
     public static boolean isDate(String date) {
-//        if (invoiceID.length() != 3) 
-//            return false;
-//        
-//        char area = positionID.charAt(0);
-//        char shelf1 = positionID.charAt(1);
-//        char shelf2 = positionID.charAt(2);
-//        if (!( ('A' <= area && area <= 'Z') 
-//            && ('0' <= shelf1 && shelf1 <= '9') 
-//            && ('0' <= shelf2 && shelf2 <= '9') ))
-//            return false;
-//        
+
         return true;
     }
 
@@ -65,6 +56,26 @@ public class Tools {
     public static boolean isInteger(String element) {
         try {
             Integer.parseInt(element);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // --Long check--
+    public static boolean isLong(String element) {
+        try {
+            Long.parseLong(element);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    // --Double check--
+    public static boolean isDouble(String element) {
+        try {
+            Double.parseDouble(element);
             return true;
         } catch (Exception e) {
             return false;
@@ -81,7 +92,6 @@ public class Tools {
         }
     }
 
-    
 // --Methods--------------------------------------------------------------------
     // --Press any key to continue--
     public static void continute() {
@@ -94,6 +104,4 @@ public class Tools {
     public static void cls() {
         
     }
-    
-
 }

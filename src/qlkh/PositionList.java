@@ -96,7 +96,7 @@ public class PositionList {
     }
 
 // --PositionID Exist In The List Check--
-    public boolean isExitst(String positionID) {
+    public boolean isExist(String positionID) {
         if (find(positionID) != -1) {
             return true;
         }
@@ -112,7 +112,7 @@ public class PositionList {
         return false;
     }
 
-// --PositionID Empty Count--    
+// --Position Empty Count--    
     public int countEmptyPosition() {
         int n = 0;
         for (Position i : positionList) {
@@ -164,7 +164,7 @@ public class PositionList {
         return true;
     }
 
-// --Delete position and update file--
+// --Remove position and update file--
     public boolean remove(Position element) {
         if (!positionList.remove(element)) {
             return false;
@@ -173,7 +173,7 @@ public class PositionList {
         return true;
     }
 
-// --Delete position by area and shelf seri--
+// --Remove position by area and shelf seri--
     public boolean remove(char area, short shelf) {
         int index = find(area, shelf);
         if (index != -1) {
@@ -182,7 +182,7 @@ public class PositionList {
         return false;
     }
 
-// --Delete position by ID--
+// --Remove position by ID--
     public boolean remove(String positionID) {
         int index = find(positionID);
         if (index != -1) {
@@ -196,10 +196,10 @@ public class PositionList {
         System.out.println("---XOA KE HANG---");
         System.out.print("Nhap ID: ");
         String positionID = Tools.scan.nextLine();
-        while (!Tools.isPositionID(positionID)) {
-            System.out.print("Nhap ID: ");
-            positionID = Tools.scan.nextLine();
-        }
+//        while (!Tools.isPositionID(positionID)) {
+//            System.out.print("Nhap ID: ");
+//            positionID = Tools.scan.nextLine();
+//        }
 
         if (!remove(positionID)) {
             System.out.println("---Xoa khong thanh cong---");
@@ -209,19 +209,13 @@ public class PositionList {
         return true;
     }
 
-// --Modify position status and update file--
-    public void modify(int index, Position element) {
-        positionList.set(index, element);
-        writeToFile();
-    }
-
 // --Modify position status by ID--
     public boolean modify(String positionID, boolean status) {
         int index = find(positionID);
         if (index != -1) {
             Position e = positionList.get(index);
             e.setStatus(status);
-            modify(index, e);
+            set(index, e);
             return true;
         }
         return false;
@@ -255,7 +249,7 @@ public class PositionList {
     }
 
 // --Console: Show empty position--
-    public void showEmptyPosition() {
+    private void showEmptyPosition() {
         boolean check = false;
         for (Position i : positionList) {
             if (i.getStatus()) {
@@ -283,7 +277,7 @@ public class PositionList {
     }
 
 // --Console: Show all position--
-    public void showAllPosition() {
+    private void showAllPosition() {
         System.out.println("---DANH SACH KE HANG---");
         System.out.println(" ___________ ____________ ");
         System.out.println("| Ma vi tri | Trang thai |");
@@ -366,9 +360,15 @@ public class PositionList {
 
     public void setPositionList(ArrayList<Position> positionList) {
         this.positionList = positionList;
+        writeToFile();
     }
 
     public Position get(int index) {
         return positionList.get(index);
+    }
+    
+    public void set(int index, Position element) {
+        positionList.set(index, element);
+        writeToFile();
     }
 }

@@ -60,6 +60,7 @@ public class Position {
         status = true;
     }
 
+// --String to write to file--
     @Override
     public String toString() {
         return positionID + "," + status + "\n";

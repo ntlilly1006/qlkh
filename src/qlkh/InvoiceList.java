@@ -1,128 +1,287 @@
 package qlkh;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /**
- * DONE
+ * Default init
+ *
  * @author Lilly
  */
-public class InvoiceList extends ListAbs {
+import java.io.*;
+import java.util.*;
+
+public class InvoiceList {
+
     private ArrayList<Invoice> invoiceList;
-    
+    private String filePath = "InvoiceList.txt";
+
+// --Constructor----------------------------------------------------------------    
     public InvoiceList() {
-        this.invoiceList = new ArrayList<Invoice>();
+        invoiceList = new ArrayList<Invoice>();
+
+        FileInputStream fileInputStream = null;
+        Scanner scanFile = null;
+
+        try {
+            fileInputStream = new FileInputStream(filePath);
+            scanFile = new Scanner(fileInputStream);
+
+            // --Open and read from file--
+            while (scanFile.hasNext()) {
+                String line = scanFile.nextLine();
+                String[] E = null;
+                if (line != null) {
+                    E = line.split(",");
+                }
+                if (E.length >= 6) {
+                    char iE = E[0].charAt(0);
+                    String invoiceID = E[1];
+                    String date = E[2];
+                    String prepareBy = E[3];
+                    String receivedBy = E[4];
+
+                    // --Valid invoice check-- Bo sung check nguoi ghi hoa don ng nhan hoa don 
+                    Invoice element = null;
+                    if ((iE == 'I' || iE == 'E')
+                            && Tools.isInvoiceID(invoiceID)
+                            && Tools.isDate(date)) {
+                        element = new Invoice(iE, invoiceID, date, prepareBy, receivedBy);
+
+                        // --Add product list--
+                        int i = 5;
+                        for (; i < (E.length - 1);) {
+                            String productID = E[i++];
+                            String unit = E[i++];
+                            String aStr = E[i++];
+                            String pStr = E[i++];
+
+                            // --Valid product check--
+                            if (Tools.isLong(aStr) && Tools.isDouble(pStr)) {
+                                element.addMoreProduct(productID, unit, Long.parseLong(aStr), Double.parseDouble(pStr));
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            // --Default init--
+            Invoice e1 = new Invoice('I', "I0000001", "11/11/2022", "AiN", "TGDD");
+            Invoice e2 = new Invoice('I', "I0000010", "10/11/2022", "Ken", "TGDD");
+            Invoice e3 = new Invoice('I', "I0000011", "10/11/2022", "AiN", "DMX");
+            Invoice e4 = new Invoice('I', "I0000100", "11/11/2022", "Ken", "DMX");
+            Invoice e5 = new Invoice('I', "I0000101", "11/11/2022", "AiN", "CPS");
+            Invoice e6 = new Invoice('E', "E0000110", "10/11/2022", "Ken", "FPT");
+            Invoice e7 = new Invoice('E', "E0000111", "10/11/2022", "AiN", "FPT");
+            Invoice e8 = new Invoice('E', "E0001000", "11/11/2022", "Ken", "PV");
+            Invoice e9 = new Invoice('E', "E0001001", "11/11/2022", "AiN", "PV");
+            Invoice e10 = new Invoice('E', "E0001010", "10/11/2022", "Ken", "CPS");
+
+            ArrayList<ProductInvoice> list = new ArrayList<>();
+            e1.setProductList(list);
+            e2.setProductList(list);
+            e3.setProductList(list);
+            e4.setProductList(list);
+            e5.setProductList(list);
+            e6.setProductList(list);
+            e7.setProductList(list);
+            e8.setProductList(list);
+            e9.setProductList(list);
+            e10.setProductList(list);
+            
+            invoiceList.add(e1);
+            invoiceList.add(e2);
+            invoiceList.add(e3);
+            invoiceList.add(e4);
+            invoiceList.add(e5);
+            invoiceList.add(e6);
+            invoiceList.add(e7);
+            invoiceList.add(e8);
+            invoiceList.add(e9);
+            invoiceList.add(e10);
+
+            writeToFile();
+        } finally {
+            try {
+                if (scanFile != null) {
+                    scanFile.close();
+                }
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("---Da xay ra loi---");
+            }
+        }
     }
+
     public InvoiceList(ArrayList<Invoice> invoiceList) {
         this.invoiceList = new ArrayList<Invoice>(invoiceList);
+        writeToFile();
     }
-//------------------------------------------------------------------------------
-    @Override
-    public void clear() {
-        invoiceList.clear();
-    }
-//--Them hoa don moi--    
-    public int addNew(Invoice element) {
-        //--Co trung ma hoa don hay khong--
-        if (find(element.getInvoiceID()) != -1) {
-            return -1;
+
+// -----------------------------------------------------------------------------
+// --Find by ID, return index--
+    public int find(String invoiceID) {
+        if (!invoiceList.isEmpty() && Tools.isInvoiceID(invoiceID)) {
+            for (int index = 0; index < invoiceList.size(); index++) {
+                String temp = invoiceList.get(index).getInvoiceID();
+                if (invoiceID.equalsIgnoreCase(temp)) {
+                    return index;
+                }
+            }
         }
-        //--Tao moi neu khong--
-        if (!invoiceList.add(element)) 
-            return -1;
-        return 0;
+        return -1;
     }
-    
-    @Override
-    public int addNew() {
-        Scanner scan = new Scanner(System.in);
+
+// --InvoiceID Exist In The List Check--
+    public boolean isExist(String invoiceID) {
+        if (find(invoiceID) != -1) {
+            return true;
+        }
+        return false;
+    }
+
+// --Count import/export invoice--    
+    public int countByIE(char iE) {
+        int n = 0;
+        for (Invoice i : invoiceList) {
+            if (iE == i.getIE()) {
+                n++;
+            }
+        }
+        return n;
+    }
+
+// --Count by date--    
+    public int countByDate(String date) {
+        int n = 0;
+        for (Invoice i : invoiceList) {
+            if (date.equalsIgnoreCase(i.getDate())) {
+                n++;
+            }
+        }
+        return n;
+    }
+
+// --Count by preparer--    
+    public int countByPreparer(String prepareBy) {
+        int n = 0;
+        for (Invoice i : invoiceList) {
+            if (prepareBy.equalsIgnoreCase(i.getPrepareBy())) {
+                n++;
+            }
+        }
+        return n;
+    }
+
+// --Count by receiver--    
+    public int countByReceiver(String receivedBy) {
+        int n = 0;
+        for (Invoice i : invoiceList) {
+            if (receivedBy.equalsIgnoreCase(i.getReceivedBy())) {
+                n++;
+            }
+        }
+        return n;
+    }
+
+// --Add new invoice and write to file--    
+    public boolean add(Invoice element) {
+        if (!invoiceList.add(element)) {
+            return false;
+        }
+        writeToFile();
+        return false;
+    }
+
+// --Console: Add new invoice--
+    public boolean add() {
         System.out.println("---THEM HOA DON MOI---");
         System.out.println("--CANH BAO--");
         System.out.println("Them hoa don moi khong thay doi danh sach san pham");
         System.out.println("Huy bo them ?");
         System.out.println("Dong y. (Y)");
         System.out.println("Khong dong y, tiep tuc them hoa don. (N)");
-        char option = scan.next().charAt(0);
-        if (option == 'Y')
-            return -1;
+        char option = Tools.scan.next().charAt(0);
+        if (option == 'Y') {
+            return false;
+        }
+
         Invoice element = new Invoice();
         element.enter();
-        if (0 != addNew(element)) {
+
+        if (!add(element)) {
             System.out.println("---Them khong thanh cong---");
-            return -1;
+            return false;
         }
         System.out.println("---Them thanh cong---");
-        return 0;
+        return true;
     }
 
-//--Xoa hoa don--
-    public int delete(String invoiceID) {
-        int index = find(invoiceID);
-        if (index == -1) {
-            return -1;
+// --Remove invoice and update file--
+    public boolean remove(Invoice element) {
+        if (!invoiceList.remove(element)) {
+            return false;
         }
-        invoiceList.remove(invoiceList.get(index));
-        return 0;
+        writeToFile();
+        return true;
     }
-    
-    @Override
-    public int delete() {
-        Scanner scan = new Scanner(System.in);
+
+// --Remove invoice by ID--
+    public boolean remove(String invoiceID) {
+        int index = find(invoiceID);
+        if (index != -1) {
+            return remove(invoiceList.get(index));
+        }
+        return false;
+    }
+
+// --Console: Remove invoice--
+    public boolean remove() {
         System.out.println("---XOA HOA DON---");
         System.out.println("--CANH BAO--");
         System.out.println("Xoa hoa don moi khong thay doi danh sach san pham");
         System.out.println("Huy bo xoa ?");
         System.out.println("Dong y. (Y)");
         System.out.println("Khong dong y, tiep tuc xoa hoa don. (N)");
-        char option = scan.next().charAt(0);
-        if (option == 'Y')
-            return -1;
-        String invID = scan.next();
-        
-        if (delete(invID) != 0) {
-            System.out.println("---Xoa khong thanh cong---");
-            return -1;
+        char option = Tools.scan.next().charAt(0);
+        if (option == 'Y') {
+            return false;
         }
-        else
+
+        System.out.print("Nhap ID hoa don: ");
+        String invoiceID = Tools.scan.nextLine();
+//        while (!Tools.isInvoiceID(invoiceID)) {
+//            System.out.print("Nhap ID hoa don: ");
+//            invoiceID = Tools.scan.nextLine();
+//        }
+
+        if (!remove(invoiceID)) {
+            System.out.println("---Xoa khong thanh cong---");
+            return false;
+        }
         System.out.println("---Xoa thanh cong---");
-        return 0;
+        return true;
     }
 
-//--Chinh sua thong tin hoa don--
-    @Override
-    public int modify() { //Hoa don khong duoc sua
-        return -1; 
-    }
-    
-//--Tim kiem hoa don--
-    public int find(String invoiceID) {
-        if (!invoiceList.isEmpty()) {
-            for (int index = 0; index < invoiceList.size(); index++) {
-                String temp = invoiceList.get(index).getInvoiceID();
-                if (invoiceID.equalsIgnoreCase(temp))
-                    return index;
-            }
-        }
-        return -1;
-    }
-    
-//--Xem hoa don--   
+// --Console: Show all invoice--
     private void showAll() {
         if (invoiceList.isEmpty()) {
             System.out.println("---KHONG CO HOA DON NAO---");
             return;
         }
         System.out.println("---TAT CA HOA DON---");
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            e.displayTable();
+            e.display();
         }
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
     }
-    
+
+// --Console: Show all import/export invoice--
     private void showByIE(char iE) {
         boolean check = false;
         for (Invoice e : invoiceList) {
-            if(iE == e.getIE()) {
+            if (iE == e.getIE()) {
                 check = true;
                 break;
             }
@@ -131,21 +290,26 @@ public class InvoiceList extends ListAbs {
             System.out.println("---KHONG CO HOA DON THOA YEU CAU---");
             return;
         }
-        if (iE == 'I')
+        if (iE == 'I') {
             System.out.println("---TAT CA HOA DON NHAP HANG---");
-        else if (iE == 'E')
+        } else if (iE == 'E') {
             System.out.println("---TAT CA HOA DON XUAT HANG---");
+        }
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            if(iE == e.getIE())
-                e.displayTable();
+            if (iE == e.getIE()) {
+                e.display();
+            }
         }
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
     }
 
+// --Console: Show invoice by date--
     private void showByDate(String date) {
         boolean check = false;
         for (Invoice e : invoiceList) {
-            if(date == e.getDate()) {
+            if (date.equalsIgnoreCase(e.getDate())) {
                 check = true;
                 break;
             }
@@ -155,17 +319,21 @@ public class InvoiceList extends ListAbs {
             return;
         }
         System.out.println("---HOA DON NGAY " + date + "---");
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            if(date == e.getDate())
-                e.displayTable();
+            if (date.equalsIgnoreCase(e.getDate())) {
+                e.display();
+            }
         }
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
     }
-    
+
+// --Console: Show invoice by preparer--
     private void showByPreparer(String name) {
         boolean check = false;
         for (Invoice e : invoiceList) {
-            if(name == e.getPrepareBy()) {
+            if (name.equalsIgnoreCase(e.getPrepareBy())) {
                 check = true;
                 break;
             }
@@ -175,17 +343,21 @@ public class InvoiceList extends ListAbs {
             return;
         }
         System.out.println("---HOA DON LAP BOI " + name + "---");
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            if(name == e.getPrepareBy())
-                e.displayTable();
+            if (name.equalsIgnoreCase(e.getPrepareBy())) {
+                e.display();
+            }
         }
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
     }
 
+// --Console: Show invoice by receiver--
     private void showByReceiver(String name) {
         boolean check = false;
         for (Invoice e : invoiceList) {
-            if(name == e.getReceivedBy()) {
+            if (name.equalsIgnoreCase(e.getReceivedBy())) {
                 check = true;
                 break;
             }
@@ -195,17 +367,19 @@ public class InvoiceList extends ListAbs {
             return;
         }
         System.out.println("---HOA DON DO " + name + " NHAN---");
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            if(name == e.getReceivedBy())
-                e.displayTable();
+            if (name.equalsIgnoreCase(e.getReceivedBy())) {
+                e.display();
+            }
         }
+        System.out.println(" _______________ _____________ __________ ______________ _______________ ");
     }
-    
-   
-    @Override
-    public void showList() {
-//        cls;
+
+// --Console: Show menu--
+    public void showMenu() {
+        Tools.cls();
         System.out.println("---XEM HOA DON---");
         System.out.println("0. Quay lai");
         System.out.println("1. Tat ca hoa don");
@@ -217,89 +391,121 @@ public class InvoiceList extends ListAbs {
         System.out.println("7. Chi tiet hoa don");
         System.out.println("8. Thoat");
         System.out.print("Vui long nhap 1 so (0->8): ");
-        Scanner scan = new Scanner(System.in);
-        String option = scan.nextLine();
-        while(!isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 8 ) {
+        String option = Tools.scan.nextLine();
+        while (!Tools.isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 8) {
             System.out.print("Vui long nhap 1 so (0->8): ");
-            option = scan.nextLine();
-        } 
-        switch(Integer.parseInt(option)) {
-            case 0: {
+            option = Tools.scan.nextLine();
+        }
+        switch (Integer.parseInt(option)) {
+            case 0 -> {
                 return;
             }
-            case 1: {
+            case 1 -> {
                 showAll();
-                continute();
+                Tools.continute();
                 break;
             }
-            case 2: {
+            case 2 -> {
                 showByIE('I');
-                continute();
+                Tools.continute();
                 break;
             }
-            case 3: {
+            case 3 -> {
                 showByIE('E');
-                continute();
+                Tools.continute();
                 break;
             }
-            case 4: {
+            case 4 -> {
                 System.out.print("Nhap ngay muon xem (dd/mm/yyyy): ");
-                String date = scan.next();
+                String date = Tools.scan.nextLine();
+                while (!Tools.isDate(date)) {
+                    System.out.print("Nhap ngay muon xem (dd/mm/yyyy): ");
+                    date = Tools.scan.nextLine();
+                }
                 showByDate(date);
-                continute();
+                Tools.continute();
                 break;
             }
-            case 5: {
+            case 5 -> {
                 System.out.print("Nhap ten nguoi lap: ");
-                String name = scan.next();
+                String name = Tools.scan.next();
                 showByPreparer(name);
-                continute();
+                Tools.continute();
                 break;
             }
-            case 6: {
+            case 6 -> {
                 System.out.print("Nhap ten nguoi nhan: ");
-                String name = scan.next();
+                String name = Tools.scan.next();
                 showByReceiver(name);
-                continute();
+                Tools.continute();
                 break;
             }
-            case 7: {
+            case 7 -> {
                 System.out.print("Nhap ID hoa don: ");
-                String invoiceID = scan.next();
+                String invoiceID = Tools.scan.next();
                 int index = find(invoiceID);
-                if (-1 != index)
-                    invoiceList.get(index).display();
-                else
+                if (-1 != index) {
+                    invoiceList.get(index).displayDetails();
+                } else {
                     System.out.println("---Khong tim thay hoa don---");
-                continute();
+                }
+                Tools.continute();
                 break;
             }
-            case 8: {
+            case 8 -> {
                 System.exit(1);
             }
         }
-        showList();
     }
-//------------------------------------------------------------------------------
-    private boolean isInteger(String number) {
+
+// --Write to file--    
+    public boolean writeToFile() {
+        File file = null;
+        FileOutputStream fout = null;
         try {
-            Integer.parseInt(number);
+            file = new File(filePath);
+            fout = new FileOutputStream(file);
+
+            // --Create file if not exists--
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            for (Invoice e : invoiceList) {
+                byte[] bs = e.toString().getBytes();
+                fout.write(bs);
+                fout.flush();
+            }
             return true;
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return false;
+        } finally {
+            try {
+                if (fout != null) {
+                    fout.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
-    
-    private void continute() {
-        System.out.println("\n---Nhan phim bat ky de tiep tuc---");
-        Scanner scan = new Scanner(System.in);
-        String continute = scan.next();
-    }
-//--Get-Set---------------------------------------------------------------------
+
+// --Getter-Setter--------------------------------------------------------------
     public ArrayList<Invoice> getInvoiceList() {
         return invoiceList;
     }
+
     public void setInvoiceList(ArrayList<Invoice> invoiceList) {
         this.invoiceList = invoiceList;
+        writeToFile();
+    }
+
+    public Invoice get(int index) {
+        return invoiceList.get(index);
+    }
+
+    public void set(int index, Invoice element) {
+        invoiceList.set(index, element);
+        writeToFile();
     }
 }
