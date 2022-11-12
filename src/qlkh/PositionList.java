@@ -29,13 +29,14 @@ public class PositionList {
                 String line = scanFile.nextLine();
                 String[] E = null;
                 if (line != null) {
-                    E = line.split(",", 2);
+                    E = line.split(",");
                 }
                 if (E.length >= 2 && Tools.isPositionID(E[0])) {
                     Position element = new Position(E[0]);
                     if (Tools.isBoolean(E[1])) {
                         element.setStatus(Boolean.parseBoolean(E[1]));
                     }
+                    add(element);
                 }
             }
         } catch (FileNotFoundException ex) {

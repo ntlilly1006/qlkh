@@ -119,11 +119,11 @@ public class Tools {
     public static void continute() {
         System.out.println("\n---Nhan Enter de tiep tuc---");
         Scanner scan = new Scanner(System.in);
-        String continute = scan.next();
+        String continute = scan.nextLine();
     }
 
     // --Clear sceen console--
     public static void cls() {
-
+        System.out.println("\n\n\n\n\n");    
     }
 }

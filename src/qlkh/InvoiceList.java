@@ -58,6 +58,7 @@ public class InvoiceList {
                                 element.addMoreProduct(productID, unit, Long.parseLong(aStr), Double.parseDouble(pStr));
                             }
                         }
+                        add(element);
                     }
                 }
             }
