@@ -1,13 +1,13 @@
 package qlkh;
 
+import java.io.*;
+import java.util.*;
+
 /**
  * Default init
  *
  * @author Lilly
  */
-import java.io.*;
-import java.util.*;
-
 public class InvoiceList {
 
     private ArrayList<Invoice> invoiceList;
@@ -63,39 +63,39 @@ public class InvoiceList {
             }
         } catch (FileNotFoundException ex) {
             // --Default init--
-            Invoice e1 = new Invoice('I', "I0000001", "11/11/2022", "AiN", "TGDD");
-            Invoice e2 = new Invoice('I', "I0000010", "10/11/2022", "Ken", "TGDD");
-            Invoice e3 = new Invoice('I', "I0000011", "10/11/2022", "AiN", "DMX");
-            Invoice e4 = new Invoice('I', "I0000100", "11/11/2022", "Ken", "DMX");
-            Invoice e5 = new Invoice('I', "I0000101", "11/11/2022", "AiN", "CPS");
-            Invoice e6 = new Invoice('E', "E0000110", "10/11/2022", "Ken", "FPT");
-            Invoice e7 = new Invoice('E', "E0000111", "10/11/2022", "AiN", "FPT");
-            Invoice e8 = new Invoice('E', "E0001000", "11/11/2022", "Ken", "PV");
-            Invoice e9 = new Invoice('E', "E0001001", "11/11/2022", "AiN", "PV");
-            Invoice e10 = new Invoice('E', "E0001010", "10/11/2022", "Ken", "CPS");
-
-            ArrayList<ProductInvoice> list = new ArrayList<>();
-            e1.setProductList(list);
-            e2.setProductList(list);
-            e3.setProductList(list);
-            e4.setProductList(list);
-            e5.setProductList(list);
-            e6.setProductList(list);
-            e7.setProductList(list);
-            e8.setProductList(list);
-            e9.setProductList(list);
-            e10.setProductList(list);
-            
-            invoiceList.add(e1);
-            invoiceList.add(e2);
-            invoiceList.add(e3);
-            invoiceList.add(e4);
-            invoiceList.add(e5);
-            invoiceList.add(e6);
-            invoiceList.add(e7);
-            invoiceList.add(e8);
-            invoiceList.add(e9);
-            invoiceList.add(e10);
+//            Invoice e1 = new Invoice('I', "I0000001", "11/11/2022", "AiN", "TGDD");
+//            Invoice e2 = new Invoice('I', "I0000010", "10/11/2022", "Ken", "TGDD");
+//            Invoice e3 = new Invoice('I', "I0000011", "10/11/2022", "AiN", "DMX");
+//            Invoice e4 = new Invoice('I', "I0000100", "11/11/2022", "Ken", "DMX");
+//            Invoice e5 = new Invoice('I', "I0000101", "11/11/2022", "AiN", "CPS");
+//            Invoice e6 = new Invoice('E', "E0000110", "10/11/2022", "Ken", "FPT");
+//            Invoice e7 = new Invoice('E', "E0000111", "10/11/2022", "AiN", "FPT");
+//            Invoice e8 = new Invoice('E', "E0001000", "11/11/2022", "Ken", "PV");
+//            Invoice e9 = new Invoice('E', "E0001001", "11/11/2022", "AiN", "PV");
+//            Invoice e10 = new Invoice('E', "E0001010", "10/11/2022", "Ken", "CPS");
+//
+//            ArrayList<ProductInvoice> list = new ArrayList<>();
+//            e1.setProductList(list);
+//            e2.setProductList(list);
+//            e3.setProductList(list);
+//            e4.setProductList(list);
+//            e5.setProductList(list);
+//            e6.setProductList(list);
+//            e7.setProductList(list);
+//            e8.setProductList(list);
+//            e9.setProductList(list);
+//            e10.setProductList(list);
+//            
+//            invoiceList.add(e1);
+//            invoiceList.add(e2);
+//            invoiceList.add(e3);
+//            invoiceList.add(e4);
+//            invoiceList.add(e5);
+//            invoiceList.add(e6);
+//            invoiceList.add(e7);
+//            invoiceList.add(e8);
+//            invoiceList.add(e9);
+//            invoiceList.add(e10);
 
             writeToFile();
         } finally {
@@ -207,8 +207,8 @@ public class InvoiceList {
 
         Invoice element = new Invoice();
         element.enter();
-
-        if (!add(element)) {
+            
+        if (!add(element) || isExist(element.getInvoiceID())) {
             System.out.println("---Them khong thanh cong---");
             return false;
         }
@@ -377,8 +377,8 @@ public class InvoiceList {
         System.out.println(" _______________ _____________ __________ ______________ _______________ ");
     }
 
-// --Console: Show menu--
-    public void showMenu() {
+// --Console: Show--
+    public void show() {
         Tools.cls();
         System.out.println("---XEM HOA DON---");
         System.out.println("0. Quay lai");
@@ -458,6 +458,45 @@ public class InvoiceList {
         }
     }
 
+// --Console: Display menu for invoice--
+    public void menu() {
+        Tools.cls();
+        System.out.println("---TRUY XUAT HOA DON---");
+        System.out.println("0. Quay lai");
+        System.out.println("1. Xem danh sach hoa don");
+        System.out.println("2. Them hoa don moi");
+        System.out.println("3. Xoa hoa don");
+        System.out.println("4. Thoat");
+        System.out.print("Vui long nhap 1 so (0->4): ");
+        String option = Tools.scan.nextLine();
+        while (!Tools.isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 4) {
+            System.out.print("Vui long nhap 1 so (0->4): ");
+            option = Tools.scan.nextLine();
+        }
+        switch (Integer.parseInt(option)) {
+            case 0: {
+                return;
+            }
+            case 1: {
+                show();
+                break;
+            }
+            case 2: {
+                add();
+                Tools.continute();
+                break;
+            }
+            case 3: {
+                remove();
+                Tools.continute();
+                break;
+            }
+            case 4: {
+                System.exit(1);
+            }
+        }
+    }
+    
 // --Write to file--    
     public boolean writeToFile() {
         File file = null;

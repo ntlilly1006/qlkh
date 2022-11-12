@@ -1,13 +1,13 @@
 package qlkh;
 
+import java.io.*;
+import java.util.*;
+
 /**
  * DONE
  *
  * @author Lilly
  */
-import java.io.*;
-import java.util.*;
-
 public class PositionList {
 
     private ArrayList<Position> positionList;
@@ -209,7 +209,7 @@ public class PositionList {
         return true;
     }
 
-// --Modify position status by ID--
+// --Modify position status by ID and update file--
     public boolean modify(String positionID, boolean status) {
         int index = find(positionID);
         if (index != -1) {
@@ -288,7 +288,7 @@ public class PositionList {
     }
 
 // --Console: Show menu--    
-    public void showMenu() {
+    public void show() {
         Tools.cls();
         System.out.println("---XEM DANH SACH KE HANG---");
         System.out.println("0. Quay lai");
@@ -316,6 +316,51 @@ public class PositionList {
                 break;
             }
             case 3: {
+                System.exit(1);
+            }
+        }
+    }
+
+//--Console: Display menu for position--
+    public void menu() {
+        Tools.cls();
+        System.out.println("---THIET LAP KHO---");
+        System.out.println("0. Quay lai");
+        System.out.println("1. Thay doi trang thai ke hang");
+        System.out.println("2. Them ke hang");
+        System.out.println("3. Xoa ke hang");
+        System.out.println("4. Xem danh sach ke hang");
+        System.out.println("5. Thoat");
+        System.out.print("Vui long nhap 1 so (0->5): ");
+        String option = Tools.scan.nextLine();
+        while (!Tools.isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 5) {
+            System.out.print("Vui long nhap 1 so (0->5): ");
+            option = Tools.scan.nextLine();
+        }
+        switch (Integer.parseInt(option)) {
+            case 0: {
+                return;
+            }
+            case 1: {
+                modify();
+                Tools.continute();
+                break;
+            }
+            case 2: {
+                add();
+                Tools.continute();
+                break;
+            }
+            case 3: {
+                remove();
+                Tools.continute();
+                break;
+            }
+            case 4: {
+                show();
+                break;
+            }
+            case 5: {
                 System.exit(1);
             }
         }
@@ -366,7 +411,7 @@ public class PositionList {
     public Position get(int index) {
         return positionList.get(index);
     }
-    
+
     public void set(int index, Position element) {
         positionList.set(index, element);
         writeToFile();

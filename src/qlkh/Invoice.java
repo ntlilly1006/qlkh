@@ -110,10 +110,10 @@ public class Invoice {
         System.out.print("Nguoi nhan hoa don: ");
         receivedBy = Tools.scan.nextLine();
 
-        System.out.println("Nhap so san pham trong danh sach:");
+        System.out.println("Nhap tong so san pham trong danh sach:");
         String nStr = Tools.scan.nextLine();
         while (!Tools.isInteger(nStr)) {
-            System.out.println("Nhap so san pham trong danh sach:");
+            System.out.println("Nhap tong so san pham trong danh sach:");
             nStr = Tools.scan.nextLine();
         }
         int n = Integer.parseInt(nStr);
@@ -128,7 +128,7 @@ public class Invoice {
         System.out.println("Tong gia tri hoa don: " + totalPrice);
     }
 
-// --Console: Display--   
+// --Console: Display details--   
     private void displayImportInvoice() {
         Tools.cls();
         System.out.println("---HOA DON NHAP HANG---");
@@ -169,6 +169,7 @@ public class Invoice {
         }
     }
 
+// --Console: Display table--   
     public void display() {
         System.out.printf("|   %-12s| %-12s|   %-6s| %-13| %-14s|\n", invoiceID, date, (iE == 'I') ? "Nhap" : "Xuat", prepareBy, receivedBy);
     }
@@ -180,7 +181,7 @@ public class Invoice {
         for (ProductInvoice e : productListInvoice) {
             temp = temp + e.toString() + ",";
         }
-        temp += totalPrice;
+        temp += totalPrice + "\n";
         return temp;
     }
 

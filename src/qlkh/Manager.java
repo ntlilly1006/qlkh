@@ -1,315 +1,114 @@
 package qlkh;
 
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 /**
+ * Default init
  *
  * @author Lilly
  */
 public class Manager {
 
-    private Warehouse positionList;
-    private ProductList productList;
-    private InvoiceList invoiceList;
+    public PositionList positionList;
+    public ProductList productList;
+    public InvoiceList invoiceList;
     private ArrayList<ContainLink> linkList;
+    private String filePath = "ContainLinkList.txt";
 
+// --Constructor----------------------------------------------------------------    
     public Manager() {
-        positionList = new Warehouse();
+        positionList = new PositionList();
         productList = new ProductList();
         invoiceList = new InvoiceList();
-        linkList = new ArrayList<ContainLink>();
-    }
-//------------------------------------------------------------------------------    
+        linkList = new ArrayList<>();
 
-    public int importPD() {
-//        cls;
-        Scanner scan = new Scanner(System.in);
-        System.out.println("---NHAP HANG---");
-        System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
-        String date = scan.nextLine();
-        System.out.print("Nhap tu: ");
-        String from = scan.nextLine();
-        System.out.print("Nguoi chiu trach nhiem: ");
-        String respond = scan.nextLine();
-        System.out.print("Co xuat hoa don khong (Y/N) ? ");
-        char option = scan.next().charAt(0);
-        if (option == 'N') {
-            System.out.println("Nhap thong tin san pham (Nhap STT = 0 de ket thuc): ");
-            System.out.print("STT: ");
-            int seri = scan.nextInt();
-            do {
-                if (positionList.ablePositionCheck() < 1) {
-                    System.out.println("---KHONG DU NOI CHUA---");
-                    break;
-                }
-                System.out.print("Nhap ID san pham: ");
-                String proID = scan.nextLine();
-                int index = productList.find(proID);
-                if (-1 == index) {
-//                tạo sp mới trong productList
-                }
-                System.out.print("Nhap so luong san pham: ");
-                double amount = scan.nextDouble();
-                System.out.print("Nhap ID ke chua: ");
-                String posID = scan.nextLine();
-                while (!positionList.ablePositionCheck(posID, true)) {
-                    System.out.println("---Ke da chua hang---");
-                    System.out.print("Nhap ID ke khac: ");
-                    posID = scan.nextLine();
-                }
-                if (-1 != addLink(posID, proID, amount, date)) {
-                    System.out.println("---Nhap thanh cong---");
-                    index = productList.find(proID);
-                    productList.modify(proID, productList.get(index).getAmount() + (long) amount);
-                } else {
-                    System.out.println("---Nhap khong thanh cong---");
-                }
-            } while (0 != seri);
-            if (seri == 0) {
-                System.out.println("---HOAN TAT NHAP HANG---");
-                return 0;
-            }
-            return -1;
-        }
-//Nhap hang co xuat hoa don        
-        System.out.print("Nhap ma hoa don: ");
-        String invoiceID = scan.nextLine();
-        Invoice invoice = new Invoice('I', invoiceID, date, respond, from);
-        System.out.println("Nhap thong tin san pham (Nhap STT = 0 de ket thuc): ");
-        System.out.print("STT: ");
-        int seri = scan.nextInt();
-        do {
-            if (positionList.ablePositionCheck() < 1) {
-                System.out.println("---KHONG DU NOI CHUA---");
-                break;
-            }
-            System.out.print("Nhap ID san pham: ");
-            String proID = scan.nextLine();
-            int index = productList.find(proID);
-            if (-1 == index) {
-//                tạo sp mới trong productList
-            }
-            System.out.print("Nhap so luong san pham: ");
-            double amount = scan.nextDouble();
-            System.out.print("Nhap ID ke chua: ");
-            String posID = scan.nextLine();
-            while (!positionList.ablePositionCheck(posID, true)) {
-                System.out.println("---Ke da chua hang---");
-                System.out.print("Nhap ID ke khac: ");
-                posID = scan.nextLine();
-            }
-            if (-1 != addLink(posID, proID, amount, date)) {
-                System.out.println("---Nhap thanh cong---");
-                index = productList.find(proID);
-                productList.modify(proID, productList.get(index).getAmount() + (long) amount);
-                invoice.addMoreProduct(proID, productList.get(index).getUnit(), amount, productList.get(index).getPrice());
-            } else {
-                System.out.println("---Nhap khong thanh cong---");
-            }
-        } while (0 != seri);
-        if (seri != 1) {
-            System.out.println("---HOAN TAT NHAP HANG---");
-            return 0;
-        }
-        return -1;
-    }
+        FileInputStream fileInputStream = null;
+        Scanner scanFile = null;
 
-    public int exportPD() {
-//        cls;
-        System.out.println("---XUAT HANG---");
-
-        return 0;
-    }
-
-    public void inventory() {
-//        cls;
-        System.out.println("---KIEM KE---");
-        System.out.println("0. Quay lai");
-        System.out.println("1. Xem danh sach hang ton kho");
-        System.out.println("2. Tra cuu hang hoa");
-        System.out.println("3. Tra cuu vi tri");
-        System.out.println("4. Thay doi vi tri hang hoa");
-        System.out.println("5. Kiem kho");
-        System.out.println("6. Thoat");
-        System.out.print("Vui long nhap 1 so (0->6): ");
-        Scanner scan = new Scanner(System.in);
-        String option = scan.nextLine();
-        while (!isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 6) {
-            System.out.print("Vui long nhap 1 so (0->6): ");
-            option = scan.nextLine();
-        }
-        switch (Integer.parseInt(option)) {
-            case 0: {
-                return;
-            }
-            case 1: {
-                showInventoryList();
-                continute();
-                break;
-            }
-            case 2: {
-                System.out.print("Nhap ID san pham: ");
-                String productID = scan.next();
-                showByProduct(productID);
-                continute();
-                break;
-            }
-            case 3: {
-                System.out.print("Nhap ID vi tri: ");
-                String posID = scan.next();
-                if (-1 != positionList.find(posID)) {
-                    int index = findByPosID(posID, true);
-                    if (-1 != index) {
-                        System.out.println("San pham: " + linkList.get(index).getProductID());
-                        System.out.println("So luong: " + linkList.get(index).getAmount());
-                        System.out.println("So ngay ton kho: " + linkList.get(index).getDays());
-                    } else {
-                        System.out.println("---Vi tri khong chua hang---");
-                    }
-                } else {
-                    System.out.println("---Vi tri khong ton tai---");
-                }
-                continute();
-                break;
-            }
-            case 4: {
-                System.out.print("Nhap ID vi tri: ");
-                String posID = scan.next();
-                int posIndex = positionList.find(posID);
-                if (-1 != posIndex) {
-                    int linkIndex = findByPosID(posID, true);
-                    if (-1 != linkIndex) {
-                        System.out.println("Vi tri: " + posID);
-                        System.out.println("San pham: " + linkList.get(linkIndex).getProductID());
-                        System.out.println("So luong: " + linkList.get(linkIndex).getAmount());
-                        System.out.println("So ngay ton kho: " + linkList.get(linkIndex).getDays());
-
-                        System.out.print("Nhap ID vi tri chuyen den: ");
-                        String modifyPosID = scan.next();
-                        if (positionList.ablePositionCheck(modifyPosID, true)) {
-                            if (-1 != addLink(modifyPosID, linkList.get(linkIndex).getProductID(), linkList.get(linkIndex).getAmount(), linkList.get(linkIndex).getInputDate())) {
-                                linkList.get(linkIndex).setStatus(false);
-                                positionList.get(posIndex).setStatus(true);
-                                System.out.println("---Chuyen thanh cong---");
-                            } else {
-                                System.out.println("---Chuyen khong thanh cong---");
-                            }
-                        } else {
-                            System.out.println("---Vi tri moi da chua hang---");
-                        }
-
-                    } else {
-                        System.out.println("---Vi tri dang trong---");
-                    }
-                } else {
-                    System.out.println("---Vi tri khong ton tai---");
-                }
-                continute();
-                break;
-            }
-            case 5: {
-//                boolean check = false;
-//                for (ContainLink i : linkList) {
-//                    if (i.getStatus()) {
-//                        check = true;
-//                        break;
-//                    }
-//                }
-//                if (!check) {
-//                    System.out.println("---KHONG CO HANG TON KHO---");
-//                    return;
-//                }
-//                System.out.println("---DANH SACH HANG TON KHO---");
-//                System.out.println("| Vi tri | ID san pham |  So luong  | So ngay ton kho |");
-//                for (ContainLink i : linkList) {
-//                    if (i.getStatus()) {
-//                        i.display();
-//                    }
-//                }
-                continute();
-                break;
-            }
-            case 6: {
-                System.exit(1);
-            }
-        }
-        inventory();
-    }
-
-    private void showInventoryList() {
-        boolean check = false;
-        for (ContainLink i : linkList) {
-            if (i.getStatus()) {
-                check = true;
-                break;
-            }
-        }
-        if (!check) {
-            System.out.println("---KHONG CO HANG TON KHO---");
-            return;
-        }
-        System.out.println("---DANH SACH HANG TON KHO---");
-        System.out.println("| Vi tri | ID san pham |  So luong  | So ngay ton kho |");
-        for (ContainLink i : linkList) {
-            if (i.getStatus()) {
-                i.display();
-            }
-        }
-    }
-
-    private void showByProduct(String productID) {
-        System.out.println("---TIM KIEM: " + productID + "---");
-        System.out.println("---KET QUA---");
-//        int index = productList.find(productID);
-//        if (-1 == index || -1 == findByProductID(productID, true)) {
-        if (-1 == findByProductID(productID, true)) {
-            System.out.println("---KHONG CO HANG NAY TRONG KHO---");
-            return;
-        }
-//        String name = productList.get(index).getName();
-        System.out.println("| Vi tri | ID san pham |  So luong  | So ngay ton kho |");
-        for (ContainLink i : linkList) {
-            if (productID == i.getProductID() && i.getStatus()) {
-                i.display();
-            }
-        }
-    }
-
-//--Private---------------------------------------------------------------------
-    private boolean isInteger(String number) {
         try {
-            Integer.parseInt(number);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
+            fileInputStream = new FileInputStream(filePath);
+            scanFile = new Scanner(fileInputStream);
+
+            // --Open and read from file--
+            while (scanFile.hasNext()) {
+                String line = scanFile.nextLine();
+                String[] E = null;
+                if (line != null) {
+                    E = line.split(",", 2);
+                }
+                if (E.length >= 5) {
+                    if (Tools.isPositionID(E[0]) && Tools.isProductID(E[1]) && Tools.isLong(E[2]) && Tools.isDate(E[3])) {
+                        ContainLink element = new ContainLink(E[0], E[1], Long.parseLong(E[2]), E[3]);
+                        if (Tools.isBoolean(E[4])) {
+                            element.setStatus(Boolean.parseBoolean(E[4]));
+                        }
+                        linkList.add(element);
+                    }
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            // --Default init--
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+//            
+            writeToFile();
+        } finally {
+            try {
+                if (scanFile != null) {
+                    scanFile.close();
+                }
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+            } catch (IOException ex) {
+                System.out.println("---Da xay ra loi---");
+            }
         }
     }
 
-    private void continute() {
-        System.out.println("\n---Nhan phim bat ky de tiep tuc---");
-        Scanner scan = new Scanner(System.in);
-        String continute = scan.next();
+    public Manager(PositionList positionList, ProductList productList, InvoiceList invoiceList, ArrayList<ContainLink> linkList) {
+        this.positionList = positionList;
+        this.productList = productList;
+        this.invoiceList = invoiceList;
+        this.linkList = new ArrayList<>(linkList);
     }
 
-    private int addLink(String posID, String productID, double amount, String inputDate) {
-        //Neu pos enable => huy bo
-        //pos able => create new containLink => add => modify posStatus
-        if (positionList.ablePositionCheck(posID, true)) {
+    public Manager(Manager other) {
+        this.positionList = other.positionList;
+        this.productList = other.productList;
+        this.invoiceList = other.invoiceList;
+        this.linkList = new ArrayList<>(other.linkList);
+    }
+
+// --Private--------------------------------------------------------------------
+// --Add new link and write to file--    
+    private boolean addLink(String posID, String productID, Long amount, String inputDate) {
+        if (positionList.isEmptyPosition(posID)) {
             ContainLink link = new ContainLink(posID, productID, amount, inputDate);
             if (linkList.add(link)) {
                 positionList.modify(posID, false);
-                return 0;
+                writeToFile();
+                return true;
             }
         }
-        return -1;
+        return false;
     }
 
-    private int findByPosID(String posID, boolean status) {
+// --Find link by position ID--    
+    private int findLinkByPosition(String positionID, boolean status) {
         if (!linkList.isEmpty()) {
             for (int index = 0; index < linkList.size(); index++) {
                 String temp = linkList.get(index).getPositionID();
-                if (posID.equalsIgnoreCase(temp) && status == linkList.get(index).getStatus()) {
+                if (positionID.equalsIgnoreCase(temp) && status == linkList.get(index).getStatus()) {
                     return index;
                 }
             }
@@ -317,7 +116,8 @@ public class Manager {
         return -1;
     }
 
-    private int findByProductID(String productID, boolean status) {
+// --Find link by product ID--
+    private int findLinkByProduct(String productID, boolean status) {
         if (!linkList.isEmpty()) {
             for (int index = 0; index < linkList.size(); index++) {
                 String temp = linkList.get(index).getProductID();
@@ -329,12 +129,444 @@ public class Manager {
         return -1;
     }
 
-//--Get-Set---------------------------------------------------------------------
-    public Warehouse getPositionList() {
+// --Disable contain links and write to file--
+    private boolean disableLink(String productID, long amount) {
+
+        writeToFile();
+        return true;
+    }
+
+// --Disable contain links and write to file--
+    private boolean disableLink(String positionID) {
+        int index = findLinkByPosition(positionID, true);
+        if (index != -1) {
+            linkList.get(index).setStatus(false);
+            positionList.modify(positionID, true);
+            writeToFile();
+            return true;
+        }
+        return false;
+    }
+
+// --Console: Display inventory list--
+    private void showInventoryList() {
+        boolean check = false;
+        for (Position i : positionList.getPositionList()) {
+            if (!i.getStatus()) {
+                check = true;
+                break;
+            }
+        }
+
+        if (!check) {
+            System.out.println("---KHONG CO HANG TON KHO---");
+            return;
+        }
+        System.out.println("---DANH SACH HANG TON KHO---");
+        System.out.println(" ________ _____________ ____________ _______________ ");
+        System.out.println("| Vi tri | ID san pham |  So luong  |So ngay ton kho|");
+        for (ContainLink i : linkList) {
+            if (i.getStatus()) {
+                i.display();
+            }
+        }
+        System.out.println(" ________ _____________ ____________ _______________ ");
+    }
+
+// --Console: --    
+    private void showByProduct(String productID) {
+        System.out.println("---TIM KIEM: " + productID + "---");
+        System.out.println("---KET QUA---");
+        if (findLinkByProduct(productID, true) == -1) {
+            System.out.println("---KHONG CO HANG NAY TRONG KHO---");
+            return;
+        }
+
+        System.out.println(" ________ _____________ ____________ _______________ ");
+        System.out.println("| Vi tri | ID san pham |  So luong  |So ngay ton kho|");
+        for (ContainLink i : linkList) {
+            if (i.getStatus() && productID.equalsIgnoreCase(i.getProductID())) {
+                i.display();
+            }
+        }
+        System.out.println(" ________ _____________ ____________ _______________ ");
+    }
+
+// -----------------------------------------------------------------------------    
+// --Console: Import--
+    public boolean importPD() {
+        Tools.cls();
+        System.out.println("---NHAP HANG---");
+        System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
+        String date = Tools.scan.nextLine();
+        while (!Tools.isDate(date)) {
+            System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
+            date = Tools.scan.nextLine();
+        }
+
+        System.out.print("Nhap tu: ");
+        String from = Tools.scan.nextLine();
+        System.out.print("Nguoi chiu trach nhiem: ");
+        String respond = Tools.scan.nextLine();
+
+        System.out.print("Co xuat hoa don khong (Y/N) ? ");
+        char option = Tools.scan.next().charAt(0);
+        if (option != 'N' && option != 'Y') {
+            System.out.print("Co xuat hoa don khong (Y/N) ? ");
+            option = Tools.scan.next().charAt(0);
+        }
+        Invoice invoice = null;
+        if (option == 'Y') {
+            System.out.print("Nhap ID hoa don: ");
+            String invoiceID = Tools.scan.nextLine();
+            while (!Tools.isInvoiceID(invoiceID) || invoiceList.isExist(invoiceID)) {
+                if (invoiceList.isExist(invoiceID)) {
+                    System.out.println("---ID da ton tai---");
+                }
+                System.out.print("Nhap ID hoa don: ");
+                invoiceID = Tools.scan.nextLine();
+            }
+            invoice = new Invoice('I', invoiceID, date, respond, from);
+        }
+
+        System.out.println("Nhap tong so san pham trong danh sach:");
+        String nStr = Tools.scan.nextLine();
+        while (!Tools.isInteger(nStr)) {
+            System.out.println("Nhap tong so san pham trong danh sach:");
+            nStr = Tools.scan.nextLine();
+        }
+        int n = Integer.parseInt(nStr);
+
+        // --Check position list--
+        if (positionList.countEmptyPosition() < n) {
+            System.out.println("---KHONG DU NOI CHUA---");
+            return false;
+        }
+
+        System.out.println("Nhap thong tin san pham:");
+        for (int i = 0; i < n;) {
+            System.out.println(i + ")");
+
+            System.out.print("Nhap ID san pham: ");
+            String productID = Tools.scan.nextLine();
+            while (!Tools.isProductID(productID)) {
+                System.out.print("Nhap ID san pham: ");
+                productID = Tools.scan.nextLine();
+            }
+
+            // --Get product index--
+            int proIndex = productList.find(productID);
+            if (-1 == proIndex) {
+//                tạo sp mới trong productList. luu lai index
+            }
+
+            System.out.print("Nhap so luong nhap vao: ");
+            String aStr = Tools.scan.nextLine();
+            while (!Tools.isLong(aStr)) {
+                System.out.print("Nhap so luong nhap vao: ");
+                aStr = Tools.scan.nextLine();
+            }
+            Long amount = Long.parseLong(aStr);
+
+            System.out.print("Nhap ID ke chua: ");
+            String positionID = Tools.scan.nextLine();
+            while (!Tools.isPositionID(positionID) || !positionList.isEmptyPosition(positionID)) {
+                if (!positionList.isEmptyPosition(positionID)) {
+                    System.out.println("---Ke da chua hang---");
+                }
+                System.out.print("Nhap ID ke chua: ");
+                positionID = Tools.scan.nextLine();
+            }
+
+            // --Create a contain link--Update product list--Create an invoice (If)--
+            if (addLink(positionID, productID, amount, date)) {
+                System.out.println("---Nhap thanh cong---");
+                long newAmount = productList.get(proIndex).getAmount() + amount;
+                productList.modify(productID, newAmount);
+                if (invoice != null) {
+                    invoice.addMoreProduct(productID, productList.get(proIndex).getUnit(), amount, productList.get(proIndex).getPrice());
+                }
+            } else {
+                System.out.println("---Nhap khong thanh cong---");
+            }
+        }
+        System.out.println("---HOAN TAT NHAP HANG---");
+        return true;
+    }
+
+// --Console: Export--    
+    public boolean exportPD() {
+        Tools.cls();
+        System.out.println("---XUAT HANG---");
+        System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
+        String date = Tools.scan.nextLine();
+        while (!Tools.isDate(date)) {
+            System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
+            date = Tools.scan.nextLine();
+        }
+
+        System.out.print("Xuat den: ");
+        String to = Tools.scan.nextLine();
+        System.out.print("Nguoi chiu trach nhiem: ");
+        String respond = Tools.scan.nextLine();
+
+        System.out.print("Co xuat hoa don khong (Y/N) ? ");
+        char option = Tools.scan.next().charAt(0);
+        if (option != 'N' && option != 'Y') {
+            System.out.print("Co xuat hoa don khong (Y/N) ? ");
+            option = Tools.scan.next().charAt(0);
+        }
+        Invoice invoice = null;
+        if (option == 'Y') {
+            System.out.print("Nhap ID hoa don: ");
+            String invoiceID = Tools.scan.nextLine();
+            while (!Tools.isInvoiceID(invoiceID) || invoiceList.isExist(invoiceID)) {
+                if (invoiceList.isExist(invoiceID)) {
+                    System.out.println("---ID da ton tai---");
+                }
+                System.out.print("Nhap ID hoa don: ");
+                invoiceID = Tools.scan.nextLine();
+            }
+            invoice = new Invoice('E', invoiceID, date, respond, to);
+        }
+
+        System.out.println("Nhap tong so san pham xuat di:");
+        String nStr = Tools.scan.nextLine();
+        while (!Tools.isInteger(nStr)) {
+            System.out.println("Nhap tong so san pham xuat di:");
+            nStr = Tools.scan.nextLine();
+        }
+        int n = Integer.parseInt(nStr);
+
+        // --Check--
+        if (positionList.countEmptyPosition() < n) {
+            System.out.println("---KHONG DU SAN PHAM---");
+            return false;
+        }
+
+        System.out.println("Nhap thong tin san pham:");
+        for (int i = 0; i < n; i++) {
+            System.out.println(i + ")");
+
+            System.out.print("Nhap ID san pham: ");
+            String productID = Tools.scan.nextLine();
+            while (!Tools.isProductID(productID)) {
+                System.out.print("Nhap ID san pham: ");
+                productID = Tools.scan.nextLine();
+            }
+
+            // --Check remain--
+            int proIndex = productList.find(productID);
+            if (-1 == proIndex || productList.get(proIndex).getAmount() == 0) {
+                System.out.println("---San pham khong co trong kho---");
+            } else {
+                Long amount = productList.get(proIndex).getAmount();
+                System.out.printf("Con %l san pham trong kho.\n", amount);
+                System.out.print("Nhap so luong xuat di: ");
+                String aStr = Tools.scan.nextLine();
+                while (!Tools.isLong(aStr)) {
+                    System.out.print("Nhap so luong nhap vao: ");
+                    aStr = Tools.scan.nextLine();
+                }
+                if (Long.parseLong(aStr) > amount) {
+                    System.out.println("So luong da nhap lon hon so luong trong kho. Tu dong xuat toi da.");
+                } else {
+                    amount = Long.parseLong(aStr);
+                }
+
+                // --Disable a contain link--Update product list--Create an invoice (If)--
+                long newAmount = productList.get(proIndex).getAmount() - amount;
+                productList.modify(productID, newAmount);
+                if (invoice != null) {
+                    invoice.addMoreProduct(productID, productList.get(proIndex).getUnit(), amount, productList.get(proIndex).getPrice());
+                }
+                disableLink(productID, amount);
+
+                System.out.println("---Xuat thanh cong---");
+            }
+        }
+        System.out.println("---HOAN TAT XUAT HANG---");
+        return true;
+    }
+
+// --Console: Inventory--
+    public void inventory() {
+        Tools.cls();
+        System.out.println("---KIEM KE---");
+        System.out.println("0. Quay lai");
+        System.out.println("1. Xem danh sach hang ton kho");
+        System.out.println("2. Tra cuu hang hoa");
+        System.out.println("3. Tra cuu vi tri");
+        System.out.println("4. Thay doi vi tri hang hoa");
+        System.out.println("5. Kiem kho");
+        System.out.println("6. Thoat");
+        System.out.print("Vui long nhap 1 so (0->6): ");
+        String option = Tools.scan.nextLine();
+        while (!Tools.isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 6) {
+            System.out.print("Vui long nhap 1 so (0->6): ");
+            option = Tools.scan.nextLine();
+        }
+        switch (Integer.parseInt(option)) {
+            case 0: {
+                return;
+            }
+            case 1: {
+                showInventoryList();
+                Tools.continute();
+                break;
+            }
+            case 2: {
+                System.out.print("Nhap ID san pham: ");
+                String productID = Tools.scan.nextLine();
+                while (!Tools.isProductID(productID)) {
+                    System.out.print("Nhap ID san pham: ");
+                    productID = Tools.scan.nextLine();
+                }
+                showByProduct(productID);
+                Tools.continute();
+                break;
+            }
+            case 3: {
+                System.out.print("Nhap ID vi tri: ");
+                String posID = Tools.scan.nextLine();
+                while (!Tools.isPositionID(posID)) {
+                    System.out.print("Nhap ID vi tri: ");
+                    posID = Tools.scan.nextLine();
+                }
+
+                if (positionList.isExist(posID)) {
+                    int index = findLinkByPosition(posID, true);
+                    if (-1 != index) {
+                        System.out.println("San pham: " + linkList.get(index).getProductID());
+                        System.out.println("So luong: " + linkList.get(index).getAmount());
+                        System.out.println("So ngay ton kho: " + linkList.get(index).getDays());
+                    } else {
+                        System.out.println("---Vi tri khong chua hang---");
+                    }
+                } else {
+                    System.out.println("---Vi tri khong ton tai---");
+                }
+                Tools.continute();
+                break;
+            }
+            case 4: {
+                System.out.print("Nhap ID vi tri: ");
+                String posID = Tools.scan.next();
+                while (!Tools.isPositionID(posID)) {
+                    System.out.print("Nhap ID vi tri: ");
+                    posID = Tools.scan.next();
+                }
+
+                if (positionList.isExist(posID)) {
+                    if (!positionList.isEmptyPosition(posID)) {
+                        int linkIndex = findLinkByPosition(posID, true);
+                        System.out.println("San pham: " + linkList.get(linkIndex).getProductID());
+                        System.out.println("So luong: " + linkList.get(linkIndex).getAmount());
+                        System.out.println("So ngay ton kho: " + linkList.get(linkIndex).getDays());
+
+                        System.out.print("Nhap ID vi tri chuyen den: ");
+                        String modifyPosID = Tools.scan.next();
+                        while (!Tools.isPositionID(posID)) {
+                            System.out.print("Nhap ID vi tri chuyen den: ");
+                            modifyPosID = Tools.scan.next();
+                        }
+
+                        if (positionList.isEmptyPosition(modifyPosID)) {
+                            ContainLink e = linkList.get(linkIndex);
+                            e.setPositionID(modifyPosID);
+                            linkList.set(linkIndex, e);
+                            writeToFile();
+                            positionList.modify(posID, true);
+                            positionList.modify(modifyPosID, false);
+                            System.out.println("---Chuyen thanh cong---");
+                        } else {
+                            System.out.println("---Vi tri moi da chua hang---");
+                        }
+
+                    } else {
+                        System.out.println("---Vi tri dang trong---");
+                    }
+                } else {
+                    System.out.println("---Vi tri khong ton tai---");
+                }
+                Tools.continute();
+                break;
+            }
+            case 5: {
+                Tools.cls();
+                System.out.println("---KIEM KHO---");
+                boolean check = false;
+                for (Position i : positionList.getPositionList()) {
+                    if (!i.getStatus()) {
+                        check = true;
+                        int index = findLinkByPosition(i.getID(), true);
+                        ContainLink e = linkList.get(index);
+                        e.enterInventory();
+                        linkList.set(index, e);
+                    }
+                }
+
+                if (check) {
+                    System.out.println(" ________ _____________ ____________ ____________ ____________ ");
+                    System.out.println("| Vi tri | ID san pham |  So luong  |  Thuc te   | Chenh lech |");
+                    for (Position i : positionList.getPositionList()) {
+                        if (!i.getStatus()) {
+                            int index = findLinkByPosition(i.getID(), true);
+                            linkList.get(index).displayInventory();
+                        }
+                    }
+                    System.out.println(" ________ _____________ ____________ ____________ ____________ ");
+                } else {
+                    System.out.println("---Kho hang trong---");
+                }
+                Tools.continute();
+                break;
+            }
+
+            case 6: {
+                System.exit(1);
+            }
+        }
+    }
+
+// --Write list contain link to file--    
+    public boolean writeToFile() {
+        File file = null;
+        FileOutputStream fout = null;
+        try {
+            file = new File(filePath);
+            fout = new FileOutputStream(file);
+
+            // --Create file if not exists--
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+
+            for (ContainLink e : linkList) {
+                byte[] bs = e.toString().getBytes();
+                fout.write(bs);
+                fout.flush();
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            try {
+                if (fout != null) {
+                    fout.close();
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+//--Getter-Setter---------------------------------------------------------------
+    public PositionList getPositionList() {
         return positionList;
     }
 
-    public void setPositionList(Warehouse positionList) {
+    public void setPositionList(PositionList positionList) {
         this.positionList = positionList;
     }
 
