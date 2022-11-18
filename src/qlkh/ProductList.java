@@ -1,126 +1,46 @@
 package qlkh;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Scanner;
-
-import javax.swing.border.TitledBorder;
-
 import java.util.*;
+import java.io.*;
 
-public class ProductList extends ListAbs {
+public class ProductList {
 
-    ArrayList<Product> productList = new ArrayList<>();
-    Product element = null;
-    Scanner sc = new Scanner(System.in);
+    private int size = 0;
+    private static Product[] product;
+    private String filePath = "Products.txt";
+    static Scanner sc = new Scanner(System.in);
+
+    // ------Constructor------
+    public ProductList(int size, Product[] product) {
+        this.size = size;
+//		product = product;
+    }
 
     public ProductList() {
     }
 
-    public ProductList(ArrayList<Product> productList) {
-        this.productList = productList;
+    // -----Add product-----
+    public void add(Product element) {
+        this.size = product.length;
+        product = Arrays.copyOf(product, product.length + 1);
+        product[this.size] = element;
+        this.size++;
     }
 
-// ---Them san pham--------------------------------------------
-    public int add(Product element) {
-        element.enter();
-        this.productList.add(element);
-        return 0;
+    // -----Modify product-----
+    public boolean modify(String id, long amount) {
+        int index = findIndex(id);
+        if (index != -1) {
+            product[index].setAmount(amount);
+            return true;
+        }
+        return false;
     }
 
-    public int addNew() {
-//		Product element = null;
-        int check = -1;
-        System.out.println("-----THEM SAN PHAM-----");
-        System.out.println("Chon loai san pham muon them: ");
-        System.out.println("(1) Laptop");
-        System.out.println("(2) Dien thoai");
-        System.out.println("(3) Dong ho thong minh");
-        System.out.println("Nhap 1 so (1->3): ");
-        String choice = sc.nextLine();
-        while (Integer.parseInt(choice) < 1 || Integer.parseInt(choice) > 3) {
-            System.out.println("Nhap sai! Chon 1 so (1->3): ");
-            choice = sc.nextLine();
-        }
-        switch (Integer.parseInt(choice)) {
-            case 1: {
-                element = new Laptop();
-                element.setType("Laptop");
-                element.enter();
-                this.productList.add(element);
-                check = 0;
-                break;
-            }
-            case 2: {
-                element = new SmartPhone();
-                element.setType("Smartphone");
-                element.enter();
-                this.productList.add(element);
-                check = 0;
-                break;
-            }
-            case 3: {
-                element = new SmartWatch();
-                element.setType("Smartwatch");
-                element.enter();
-                this.productList.add(element);
-                check = 0;
-                break;
-            }
-            default:
-                System.out.println("Khong co trong danh sach nhung san pham tren! Chon lai: ");
-        }
-
-        if (check == 0) {
-            System.out.println("Them san pham thanh cong.");
-        } else {
-            System.out.println("Them san pham khong thanh cong!");
-        }
-
-        return check;
-    }
-
-// ---Xoa san pham--------------------------------------------
-    public boolean delete(Product element) {
-        boolean check = false;
-        if (this.productList.contains(element)) {
-            check = this.productList.remove(element);
-        }
-
-        return check;
-    }
-
-    public int delete() {
-        int check = -1;
-        if (this.productList.isEmpty()) {
-            System.out.println("Khong co san pham nao trong danh sach");
-            return check;
-        }
-
-        System.out.println("-----XOA SAN PHAM-----");
-        System.out.println("Nhap id san pham muon xoa: ");
-        String id = sc.nextLine();
-
-        for (Product x : this.productList) {
-            if (x.getId().equalsIgnoreCase(id)) {
-                this.productList.remove(x);
-                check = 0;
-            }
-        }
-
-        if (check == 0) {
-            System.out.println("Xoa san pham thanh cong.");
-        } else {
-            System.out.println("Xoa san pham khong thanh cong!");
-        }
-
-        return check;
-    }
-
-// ---Sua san pham--------------------------------------------
+    // -----Modify product-----
     public int modify(Product element) {
         int check = -1;
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return check;
         }
@@ -128,42 +48,34 @@ public class ProductList extends ListAbs {
         String id = sc.nextLine();
         System.out.println("Nhap ten muon thay doi: ");
         String name = sc.nextLine();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getId().equalsIgnoreCase(id)) {
                 x.setName(name);
                 check = 0;
             }
         }
-
-        if (check == 0) {
-            System.out.println("Thay doi thanh cong.");
-        } else {
-            System.out.println("Thay doi khong thanh cong");
-        }
-
         return check;
     }
-    
-    public int modify(String proID, double amount) {
-        int index = find(proID);
-        if (index == -1) {
-            return -1;
-        }
-        Product e = productList.get(index);
-        e.setAmount((long) amount);
-        productList.set(index, e);
-        return 0;
-    }
 
+    // -----Modify products-----
     public int modify() {
         int check = -1;
-        if (this.productList.isEmpty()) {
+        int index = -1;
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return check;
         }
-
+        System.out.println("-----SUA SAN PHAM-----");
         System.out.println("Nhap id sp muon thay doi: ");
         String id = sc.nextLine();
+        while (true) {
+            if (index == findIndex(id)) {
+                System.out.println("Id khong dung! Nhap lai id: ");
+                id = sc.nextLine();
+            } else {
+                break;
+            }
+        }
         System.out.println("Chon thong tin thay doi: ");
         System.out.println("(1) Ten : ");
         System.out.println("(2) Phan loai: ");
@@ -177,7 +89,7 @@ public class ProductList extends ListAbs {
             case 1: {
                 System.out.println("Nhap ten muon thay doi: ");
                 String name = sc.nextLine();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setName(name);
                         check = 0;
@@ -188,7 +100,7 @@ public class ProductList extends ListAbs {
             case 2: {
                 System.out.println("Nhap phan loai muon thay doi: ");
                 String type = sc.nextLine();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setType(type);
                         check = 0;
@@ -199,7 +111,7 @@ public class ProductList extends ListAbs {
             case 3: {
                 System.out.println("Nhap thuong hieu muon thay doi: ");
                 String brand = sc.nextLine();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setBrand(brand);
                         check = 0;
@@ -210,7 +122,7 @@ public class ProductList extends ListAbs {
             case 4: {
                 System.out.println("Nhap ngay(dd/mm/yyyy) san xuat muon thay doi: ");
                 String date = sc.nextLine();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setManufacturingDate(date);
                         check = 0;
@@ -221,7 +133,7 @@ public class ProductList extends ListAbs {
             case 5: {
                 System.out.println("Nhap don vi tinh muon thay doi: ");
                 String unit = sc.nextLine();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setUnit(unit);
                         check = 0;
@@ -232,7 +144,7 @@ public class ProductList extends ListAbs {
             case 6: {
                 System.out.println("Nhap so luong muon thay doi: ");
                 int amount = sc.nextInt();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setAmount(amount);
                         check = 0;
@@ -243,7 +155,7 @@ public class ProductList extends ListAbs {
             case 7: {
                 System.out.println("Nhap gia muon thay doi: ");
                 double price = sc.nextDouble();
-                for (Product x : this.productList) {
+                for (Product x : product) {
                     if (x.getId().equalsIgnoreCase(id)) {
                         x.setPrice(price);
                         check = 0;
@@ -254,62 +166,117 @@ public class ProductList extends ListAbs {
             default:
                 System.out.println("Khong hop le!");
         }
-
+        writeToFile();
         if (check == 0) {
             System.out.println("Thay doi thanh cong.");
         } else {
             System.out.println("Thay doi khong thanh cong");
         }
-
         return check;
     }
 
-// ---Tim san pham--------------------------------------------
-    public void find() {
-        if (this.productList.isEmpty()) {
+    // -----Delete product-----
+    public int delete(int index) {
+        int check = -1;
+        for (int i = index; i < product.length - 1; i++) {
+            product[i] = product[i + 1];
+        }
+        this.size = product.length;
+        product = Arrays.copyOf(product, product.length - 1);
+        check = 0;
+        return check;
+
+    }
+
+    public void delete() {
+        if (product.length == 0) {
+            System.out.println("Khong co san pham nao trong danh sach");
+            return;
+        }
+        System.out.println("-----XOA SAN PHAM-----");
+        System.out.println("Nhap id san pham muon xoa: ");
+        String id = sc.nextLine();
+        int index = findIndex(id);
+        while (true) {
+            if (index == -1) {
+                System.out.println("Id khong dung! Nhap lai id: ");
+                id = sc.nextLine();
+            } else {
+                break;
+            }
+        }
+        if (delete(index) == 0) {
+            System.out.println("Xoa thanh cong.");
+        } else {
+            System.out.println("Xoa khong thanh cong!");
+        }
+        writeToFile();
+    }
+
+    // -----Find product: console-----
+    public void findProduct1() {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap id san pham can tim: ");
         String id = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
-            if (x.getId().equalsIgnoreCase(id)) {
-                x.display();
+        int index;
+        while (true) {
+            index = findIndex(id);
+            if (index == -1) {
+                System.out.println("Id khong dung! Nhap lai id: ");
+                id = sc.nextLine();
+            } else {
+                break;
+            }
+        }
+        for (int i = 0; i < product.length; i++) {
+            if (product[i].getId().equalsIgnoreCase(id)) {
+                product[i].display();
             }
         }
     }
-    
-    public int find(String id) {
-        if (!productList.isEmpty()) {
-            for (int index = 0; index < productList.size(); index++) {
-                String temp = productList.get(index).getId();
-                if (id.equalsIgnoreCase(temp))
-                    return index;
-            }
-        }
-        return -1;
-    }
-    
 
-//	public static void sort(ArrayList<Product> list) {
-//		list.sort((o1, o2) -> o1.getId().compareTo(o2.getId()));
-//	}
-// ---Sap xep san pham theo id--------------------------------------------
+    // -----Find product: console-----
+    public Product findProduct2() {
+        Product temp = null;
+        if (product.length == 0) {
+            System.out.println("Khong co san pham nao trong danh sach");
+            return null;
+        }
+        System.out.println("Nhap id san pham can tim: ");
+        String id = sc.nextLine();
+        for (Product x : product) {
+            if (x.getId().equalsIgnoreCase(id)) {
+                temp = x;
+            }
+        }
+        return temp;
+    }
+
+    // -----Find product: index-----
+    public int findIndex(String id) {
+        int index = -1;
+        for (int i = 0; i < product.length; i++) {
+            if (product[i].getId().equalsIgnoreCase(id)) {
+                index = i;
+            }
+        }
+        return index;
+    }
+
+    // -----Sort by ID-----
     public void sort() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
-        System.out.println("Danh sach san pham sau khi sap xep");
-        element.title();
-        for (Product x : this.productList) {
-            x.display();
-        }
-        Collections.sort(this.productList);
+        Arrays.sort(product);
+        writeToFile();
     }
 
-// ---Hien thi danh sach san pham--------------------------------------------
+    // -----Show list of products-----
     public void showList() {
         System.out.println("---XEM SAN PHAM---");
         System.out.println("(1) Tat ca cac san pham");
@@ -371,49 +338,39 @@ public class ProductList extends ListAbs {
         }
     }
 
+    // -----Show product: console-----
     public void showAll() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
-        System.out.println("Danh sach tat ca cac san pham: ");
-        Iterator<Product> iterator = this.productList.iterator();
-        element.title();
-        while (iterator.hasNext()) {
-            iterator.next().display();
+        for (int i = 0; i < product.length; i++) {
+            product[i].display();
         }
     }
 
     public void showById() {
-        int check = -1;
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap id san pham: ");
         String id = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getId().equalsIgnoreCase(id)) {
                 x.display();
-                check = 0;
             }
-        }
-
-        if (check == -1) {
-            System.out.println("Khong co san pham trong danh sach");
         }
     }
 
     public void showByName() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap ten san pham: ");
         String name = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getName().equalsIgnoreCase(name)) {
                 x.display();
             }
@@ -421,14 +378,13 @@ public class ProductList extends ListAbs {
     }
 
     public void showByType() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap phan loai san san pham: ");
         String type = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getType().equalsIgnoreCase(type)) {
                 x.display();
             }
@@ -436,14 +392,13 @@ public class ProductList extends ListAbs {
     }
 
     public void showByBrand() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap thuong hieu san pham: ");
         String brand = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getBrand().equalsIgnoreCase(brand)) {
                 x.display();
             }
@@ -451,14 +406,13 @@ public class ProductList extends ListAbs {
     }
 
     public void showByDate() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap ngay(dd/mm/yyyy) san pham: ");
         String date = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getManufacturingDate().equalsIgnoreCase(date)) {
                 x.display();
             }
@@ -466,14 +420,13 @@ public class ProductList extends ListAbs {
     }
 
     public void showByUnit() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap don vi tinh san pham: ");
         String unit = sc.nextLine();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getUnit().equalsIgnoreCase(unit)) {
                 x.display();
             }
@@ -481,14 +434,13 @@ public class ProductList extends ListAbs {
     }
 
     public void showByAmount() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap so luong san pham: ");
         double amount = sc.nextDouble();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getAmount() == amount) {
                 x.display();
             }
@@ -496,21 +448,156 @@ public class ProductList extends ListAbs {
     }
 
     public void showByPrice() {
-        if (this.productList.isEmpty()) {
+        if (product.length == 0) {
             System.out.println("Khong co san pham nao trong danh sach");
             return;
         }
         System.out.println("Nhap gia san pham: ");
         double price = sc.nextDouble();
-        element.title();
-        for (Product x : this.productList) {
+        for (Product x : product) {
             if (x.getPrice() == price) {
                 x.display();
             }
         }
     }
 
-//--Private-method-function-----------------------------------------------------
+    // -----Cut string-----
+    public static String cutString(String str, String beginString, String endString) {
+        int beginIndex = str.indexOf(beginString) + beginString.length();
+        int endIndex = str.indexOf(endString, beginIndex);
+        return str.substring(beginIndex, endIndex);
+    }
+
+    // -----Convert string to object-----
+    public Product dataToObject(String data) {
+        Product newProduct = null;
+        switch (cutString(data, "type: ", ",")) {
+            case "LapTop" -> {
+                newProduct = new Laptop();
+                newProduct.setId(cutString(data, "id: ", ","));
+                newProduct.setName(cutString(data, "name: ", ","));
+                newProduct.setType(cutString(data, "type: ", ","));
+                newProduct.setBrand(cutString(data, "brand: ", ","));
+                newProduct.setManufacturingDate(cutString(data, "manufacturingDate: ", ","));
+                newProduct.setUnit(cutString(data, "unit: ", ","));
+                newProduct.setAmount(Long.parseLong(cutString(data, "amount: ", ",")));
+                newProduct.setPrice(Double.parseDouble(cutString(data, "price: ", ",")));
+                Details newDetails = new Details();
+                newDetails.setGraphics(cutString(data, "graphics: ", ","));
+                newDetails.setCpu(cutString(data, "cpu: ", ","));
+                newDetails.setSizeMemory(cutString(data, "sizeMemory: ", ","));
+                newDetails.setColor(cutString(data, "color=", ","));
+                newDetails.setSizeScreen(Double.parseDouble(cutString(data, "sizeScreen: ", ",")));
+                newDetails.setWeight(Double.parseDouble(cutString(data, "weight: ", ".")));
+                ((Laptop) newProduct).setDetail(newDetails);
+            }
+            case "SmartPhone" -> {
+                newProduct = new SmartPhone();
+                newProduct.setId(cutString(data, "id: ", ","));
+                newProduct.setName(cutString(data, "name: ", ","));
+                newProduct.setType(cutString(data, "type: ", ","));
+                newProduct.setBrand(cutString(data, "brand: ", ","));
+                newProduct.setManufacturingDate(cutString(data, "manufacturingDate: ", ","));
+                newProduct.setUnit(cutString(data, "unit: ", ","));
+                newProduct.setAmount(Long.parseLong(cutString(data, "amount: ", ",")));
+                newProduct.setPrice(Double.parseDouble(cutString(data, "price: ", ",")));
+                newProduct.setPrice(Double.parseDouble(cutString(data, "price: ", ",")));
+                Details newDetails = new Details();
+                newDetails.setGraphics(cutString(data, "graphics: ", ","));
+                newDetails.setCpu(cutString(data, "cpu: ", ","));
+                newDetails.setSizeMemory(cutString(data, "sizeMemory: ", ","));
+                newDetails.setColor(cutString(data, "color: ", ","));
+                newDetails.setSizeScreen(Double.parseDouble(cutString(data, "sizeScreen: ", ",")));
+                newDetails.setWeight(Double.parseDouble(cutString(data, "weight: ", ".")));
+                ((SmartPhone) newProduct).setDetail(newDetails);
+            }
+            case "SmartWatch" -> {
+                newProduct = new SmartWatch();
+                newProduct.setId(cutString(data, "id: ", ","));
+                newProduct.setName(cutString(data, "name: ", ","));
+                newProduct.setType(cutString(data, "type: ", ","));
+                newProduct.setBrand(cutString(data, "brand: ", ","));
+                newProduct.setManufacturingDate(cutString(data, "manufacturingDate: ", ","));
+                newProduct.setUnit(cutString(data, "unit: ", ","));
+                newProduct.setAmount(Long.parseLong(cutString(data, "amount: ", ",")));
+                newProduct.setPrice(Double.parseDouble(cutString(data, "price: ", ",")));
+                Details newDetails = new Details();
+                newDetails.setGraphics(cutString(data, "graphics: ", ","));
+                newDetails.setCpu(cutString(data, "cpu: ", ","));
+                newDetails.setSizeMemory(cutString(data, "sizeMemory: ", ","));
+                newDetails.setColor(cutString(data, "color: ", ","));
+                newDetails.setSizeScreen(Double.parseDouble(cutString(data, "sizeScreen: ", ",")));
+                newDetails.setWeight(Double.parseDouble(cutString(data, "weight: ", ".")));
+                ((SmartWatch) newProduct).setDetail(newDetails);
+            }
+        }
+        return newProduct;
+    }
+
+    public boolean readFromFile() throws IOException {
+        ProductList ob = new ProductList();
+        try {
+            File myObj = new File(filePath);
+            if (myObj.length() == 0) {
+                System.out.println("File is empty!");
+                return false;
+            }
+            Scanner myReader = new Scanner(myObj);
+            product = new Product[this.size];
+            while (myReader.hasNextLine()) {
+                String data = myReader.nextLine();
+                ob.add(ob.dataToObject(data));
+            }
+            myReader.close();
+            System.out.println("Read from file Successfully.");
+        } catch (FileNotFoundException e) {
+            System.out.println("Error!");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    // -----Write to file-----
+    public boolean writeToFile() {
+        try {
+            File outPath = new File(filePath);
+            FileWriter myWriter = new FileWriter(filePath);
+            if (!outPath.exists()) {
+                outPath.createNewFile();
+            }
+            for (int i = 0; i < product.length; i++) {
+                if (i == product.length - 1) {
+                    myWriter.write(product[i].toString());
+                    break;
+                }
+                myWriter.write(product[i].toString() + "\n");
+            }
+            myWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error!");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public void defaultProducts() throws IOException {
+        // Default products
+        ProductList ob = new ProductList();
+        product = new Product[4];
+        product[0] = new Laptop("002", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+                "256gb", "Trang", 13.3, 2);
+        product[1] = new SmartWatch("001", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+                "256gb", "Trang", 13.3, 2);
+        product[2] = new SmartPhone("004", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+                "256gb", "Trang", 13.3, 2);
+        product[3] = new Laptop("003", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+                "256gb", "Trang", 13.3, 2);
+        ob.writeToFile();
+    }
+
+    // --Private-method-function-----------------------------------------------------
     private static boolean isInteger(String str) {
         try {
             Integer.parseInt(str);
@@ -520,21 +607,28 @@ public class ProductList extends ListAbs {
         }
     }
 
-//--Get-Set---------------------------------------------------------------------
-    public ArrayList<Product> getProductList() {
-        return productList;
+    // --Get-Set---------------------------------------------------------------------
+    public int getSize() {
+        return size;
     }
 
-    public void setProductList(ArrayList<Product> productList) {
-        this.productList = productList;
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Product[] getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product[] product) {
+//		product = product;
     }
 
     public Product get(int index) {
-        return productList.get(index);
+        return product[index];
     }
-    
-    @Override
-    public void clear() {
-        productList.clear();
+
+    public void set(int index, Product product) {
+        this.product[index] = product;
     }
 }
