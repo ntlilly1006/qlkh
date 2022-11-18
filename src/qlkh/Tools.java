@@ -1,5 +1,6 @@
 package qlkh;
 
+import java.io.*;
 import java.text.*;
 import java.util.*;
 
@@ -48,7 +49,7 @@ public class Tools {
         if (invoiceID.charAt(0) != 'I' && invoiceID.charAt(0) != 'E') {
             return false;
         }
-        
+
         if (!isLong(invoiceID.substring(1)) && invoiceID.equalsIgnoreCase("I0000000") && invoiceID.equalsIgnoreCase("E0000000")) {
             return false;
         }
@@ -124,6 +125,13 @@ public class Tools {
 
     // --Clear sceen console--
     public static void cls() {
-        System.out.println("\n\n\n\n\n");    
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                Runtime.getRuntime().exec("clear");
+            }
+        } catch (IOException | InterruptedException ex) {
+        }
     }
 }

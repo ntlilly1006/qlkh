@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * Default init
- *
+ * Dòng 260, Ken vào viết hộ nha
  * @author Lilly
  */
 public class Manager {
@@ -91,7 +91,7 @@ public class Manager {
 
 // --Private--------------------------------------------------------------------
 // --Add new link and write to file--    
-    private boolean addLink(String posID, String productID, Long amount, String inputDate) {
+    private boolean addLink(String posID, String productID, long amount, String inputDate) {
         if (positionList.isEmptyPosition(posID)) {
             ContainLink link = new ContainLink(posID, productID, amount, inputDate);
             if (linkList.add(link)) {
@@ -255,7 +255,7 @@ public class Manager {
             }
 
             // --Get product index--
-            int proIndex = productList.find(productID);
+            int proIndex = productList.findIndex(productID);
             if (-1 == proIndex) {
 //                tạo sp mới trong productList. luu lai index
             }
@@ -266,7 +266,7 @@ public class Manager {
                 System.out.print("Nhap so luong nhap vao: ");
                 aStr = Tools.scan.nextLine();
             }
-            Long amount = Long.parseLong(aStr);
+            long amount = Long.parseLong(aStr);
 
             System.out.print("Nhap ID ke chua: ");
             String positionID = Tools.scan.nextLine();
@@ -356,11 +356,11 @@ public class Manager {
             }
 
             // --Check remain--
-            int proIndex = productList.find(productID);
+            int proIndex = productList.findIndex(productID);
             if (-1 == proIndex || productList.get(proIndex).getAmount() == 0) {
                 System.out.println("---San pham khong co trong kho---");
             } else {
-                Long amount = productList.get(proIndex).getAmount();
+                long amount = productList.get(proIndex).getAmount();
                 System.out.printf("Con %l san pham trong kho.\n", amount);
                 System.out.print("Nhap so luong xuat di: ");
                 String aStr = Tools.scan.nextLine();
