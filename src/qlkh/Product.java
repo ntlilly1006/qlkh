@@ -119,7 +119,7 @@ public class Product implements Comparable<Product> {
 		this.unit = unit;
 	}
 
-	public double getAmount() {
+	public long getAmount() {
 		return amount;
 	}
 

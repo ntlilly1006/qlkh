@@ -15,6 +15,24 @@ public class Tools {
     public static Scanner scan = new Scanner(System.in);
 
 // --Functions check------------------------------------------------------------    
+    // --StaffID--
+    public static boolean isStaffID(String productID) {
+
+        return true;
+    }
+
+    // --SupplierID--
+    public static boolean isSupplierID(String productID) {
+
+        return true;
+    }
+
+    // --DistributorID--
+    public static boolean isDistributorID(String productID) {
+
+        return true;
+    }
+
     // --PositionID--X00--
     public static boolean isPositionID(String positionID) {
         if (positionID.length() != 3) {

@@ -6,7 +6,7 @@ import java.io.*;
 public class ProductList {
 	private int size = 0;
 	private static Product[] product;
-	private String filePath = "D:\\work-space\\java-workspace\\project-qlkh\\src\\qlkh\\products.txt";
+	private String filePath = "products.txt";
 	static Scanner sc = new Scanner(System.in);
 
 	// ------Constructor------
@@ -72,6 +72,16 @@ public class ProductList {
 		return check;
 	}
 
+	// -----Modify product-----
+	public boolean modify(String productID, long newAmount) {
+		int index = findIndex(productID);
+		if (index != -1) {
+                    product[index].setAmount(newAmount);
+                    return true;
+		}
+                return false;
+	}
+        
 	// -----Modify products-----
 	public int modify() {
 		int check = -1;
@@ -644,5 +654,9 @@ public class ProductList {
 	public void setProduct(Product[] product) {
 //		product = product;
 	}
+        
+        public Product get(int index) {
+            return product[index];
+        }
 
 }

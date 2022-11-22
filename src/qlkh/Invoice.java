@@ -83,32 +83,38 @@ public class Invoice {
         Tools.cls();
         System.out.println("---XUAT HOA DON---");
 
-        System.out.print("Nhap vao kho (I) hay xuat khoi kho (E): ");
-        iE = Tools.scan.next().charAt(0);
-        while (iE != 'I' && iE != 'E') {
+        do {
             System.out.print("Nhap vao kho (I) hay xuat khoi kho (E): ");
             iE = Tools.scan.next().charAt(0);
-        }
+        } while (iE != 'I' && iE != 'E');
 
-        System.out.print("Nhap ID hoa don: ");
-        invoiceID = Tools.scan.nextLine();
-        while (!Tools.isInvoiceID(invoiceID)) {
+        do {
             System.out.print("Nhap ID hoa don: ");
             invoiceID = Tools.scan.nextLine();
-        }
+        } while (!Tools.isInvoiceID(invoiceID));
 
-        System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
-        date = Tools.scan.nextLine();
-        while (!Tools.isDate(date)) {
+        do {
             System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
             date = Tools.scan.nextLine();
+        } while (!Tools.isDate(date));
+
+        do {
+            System.out.print("Nguoi lap hoa don (ID nhan vien): ");
+            prepareBy = Tools.scan.nextLine();
+        } while (!Tools.isStaffID(prepareBy));
+
+        if (iE == 'I') {
+            do {
+                System.out.print("Nguoi nhan hoa don (ID nha cung cap): ");
+                receivedBy = Tools.scan.nextLine();
+            } while (!Tools.isSupplierID(receivedBy));
         }
-
-        System.out.print("Nguoi lap hoa don: ");
-        prepareBy = Tools.scan.nextLine();
-
-        System.out.print("Nguoi nhan hoa don: ");
-        receivedBy = Tools.scan.nextLine();
+        if (iE == 'E') {
+            do {
+                System.out.print("Nguoi nhan hoa don (ID nha phan phoi): ");
+                receivedBy = Tools.scan.nextLine();
+            } while (!Tools.isDistributorID(receivedBy));
+        }
 
         System.out.println("Nhap tong so san pham trong danh sach:");
         String nStr = Tools.scan.nextLine();

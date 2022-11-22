@@ -20,7 +20,7 @@ public class Menu {
 			System.out.println("(0) Thoat.");
 			System.out.println("Chon 1 so (0->5)");
 			choice = sc.nextLine();
-			while (!isInteger(choice) || Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 5) {
+			while (!Tools.isInteger(choice) || Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 5) {
 				System.out.println("Khong hop le! Nhap lai: ");
 				choice = sc.nextLine();
 			}

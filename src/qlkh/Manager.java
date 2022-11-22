@@ -5,7 +5,6 @@ import java.util.*;
 
 /**
  * Default init
- * Dòng 260, Ken vào viết hộ nha
  * @author Lilly
  */
 public class Manager {
@@ -211,7 +210,7 @@ public class Manager {
 
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
         char option = Tools.scan.next().charAt(0);
-        if (option != 'N' && option != 'Y') {
+        while (option != 'N' && option != 'Y') {
             System.out.print("Co xuat hoa don khong (Y/N) ? ");
             option = Tools.scan.next().charAt(0);
         }
@@ -257,7 +256,8 @@ public class Manager {
             // --Get product index--
             int proIndex = productList.findIndex(productID);
             if (-1 == proIndex) {
-//                tạo sp mới trong productList. luu lai index
+                System.out.println("San pham nhap lan dau. Vui long nhap thong tin san pham.");
+                productList.add();
             }
 
             System.out.print("Nhap so luong nhap vao: ");
