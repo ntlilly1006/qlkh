@@ -209,11 +209,12 @@ public class Manager {
         String respond = Tools.scan.nextLine();
 
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
-        char option = Tools.scan.next().charAt(0);
+        char option = Tools.scan.nextLine().charAt(0);
         while (option != 'N' && option != 'Y') {
             System.out.print("Co xuat hoa don khong (Y/N) ? ");
-            option = Tools.scan.next().charAt(0);
+            option = Tools.scan.nextLine().charAt(0);
         }
+        
         Invoice invoice = null;
         if (option == 'Y') {
             System.out.print("Nhap ID hoa don: ");
@@ -228,10 +229,10 @@ public class Manager {
             invoice = new Invoice('I', invoiceID, date, respond, from);
         }
 
-        System.out.println("Nhap tong so san pham trong danh sach:");
+        System.out.print("Nhap tong so san pham trong danh sach:");
         String nStr = Tools.scan.nextLine();
         while (!Tools.isInteger(nStr)) {
-            System.out.println("Nhap tong so san pham trong danh sach:");
+            System.out.print("Nhap tong so san pham trong danh sach:");
             nStr = Tools.scan.nextLine();
         }
         int n = Integer.parseInt(nStr);
@@ -243,7 +244,7 @@ public class Manager {
         }
 
         System.out.println("Nhap thong tin san pham:");
-        for (int i = 0; i < n;) {
+        for (int i = 1; i <= n;) {
             System.out.println(i + ")");
 
             System.out.print("Nhap ID san pham: ");
@@ -257,7 +258,8 @@ public class Manager {
             int proIndex = productList.findIndex(productID);
             if (-1 == proIndex) {
                 System.out.println("San pham nhap lan dau. Vui long nhap thong tin san pham.");
-                productList.add();
+                productList.add(productID);
+                proIndex = productList.findIndex(productID);
             }
 
             System.out.print("Nhap so luong nhap vao: ");
@@ -311,10 +313,10 @@ public class Manager {
         String respond = Tools.scan.nextLine();
 
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
-        char option = Tools.scan.next().charAt(0);
+        char option = Tools.scan.nextLine().charAt(0);
         if (option != 'N' && option != 'Y') {
             System.out.print("Co xuat hoa don khong (Y/N) ? ");
-            option = Tools.scan.next().charAt(0);
+            option = Tools.scan.nextLine().charAt(0);
         }
         Invoice invoice = null;
         if (option == 'Y') {
@@ -330,10 +332,10 @@ public class Manager {
             invoice = new Invoice('E', invoiceID, date, respond, to);
         }
 
-        System.out.println("Nhap tong so san pham xuat di:");
+        System.out.print("Nhap tong so san pham xuat di:");
         String nStr = Tools.scan.nextLine();
         while (!Tools.isInteger(nStr)) {
-            System.out.println("Nhap tong so san pham xuat di:");
+            System.out.print("Nhap tong so san pham xuat di:");
             nStr = Tools.scan.nextLine();
         }
         int n = Integer.parseInt(nStr);
@@ -345,7 +347,7 @@ public class Manager {
         }
 
         System.out.println("Nhap thong tin san pham:");
-        for (int i = 0; i < n; i++) {
+        for (int i = 1; i <= n; i++) {
             System.out.println(i + ")");
 
             System.out.print("Nhap ID san pham: ");
