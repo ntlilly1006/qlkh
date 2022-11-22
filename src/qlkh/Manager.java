@@ -5,6 +5,7 @@ import java.util.*;
 
 /**
  * Default init
+ *
  * @author Lilly
  */
 public class Manager {
@@ -203,10 +204,19 @@ public class Manager {
             date = Tools.scan.nextLine();
         }
 
-        System.out.print("Nhap tu: ");
+        System.out.print("ID nha cung cap: ");
         String from = Tools.scan.nextLine();
-        System.out.print("Nguoi chiu trach nhiem: ");
+        while (!Tools.isSupplierID(from)) {
+            System.out.print("ID nha cung cap: ");
+            from = Tools.scan.nextLine();
+        }
+
+        System.out.print("ID nhan vien: ");
         String respond = Tools.scan.nextLine();
+        while (!Tools.isStaffID(respond)) {
+            System.out.print("ID nhan vien: ");
+            respond = Tools.scan.nextLine();
+        }
 
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
         char option = Tools.scan.nextLine().charAt(0);
@@ -214,7 +224,6 @@ public class Manager {
             System.out.print("Co xuat hoa don khong (Y/N) ? ");
             option = Tools.scan.nextLine().charAt(0);
         }
-        
         Invoice invoice = null;
         if (option == 'Y') {
             System.out.print("Nhap ID hoa don: ");
@@ -229,10 +238,10 @@ public class Manager {
             invoice = new Invoice('I', invoiceID, date, respond, from);
         }
 
-        System.out.print("Nhap tong so san pham trong danh sach:");
+        System.out.print("Nhap tong so san pham nhap vao: ");
         String nStr = Tools.scan.nextLine();
         while (!Tools.isInteger(nStr)) {
-            System.out.print("Nhap tong so san pham trong danh sach:");
+            System.out.print("Nhap tong so san pham nhap vao: ");
             nStr = Tools.scan.nextLine();
         }
         int n = Integer.parseInt(nStr);
@@ -244,8 +253,8 @@ public class Manager {
         }
 
         System.out.println("Nhap thong tin san pham:");
-        for (int i = 1; i <= n;) {
-            System.out.println(i + ")");
+        for (int i = 1; i <= n; i++) {
+            System.out.println("(" + i + ")");
 
             System.out.print("Nhap ID san pham: ");
             String productID = Tools.scan.nextLine();
@@ -273,7 +282,9 @@ public class Manager {
             System.out.print("Nhap ID ke chua: ");
             String positionID = Tools.scan.nextLine();
             while (!Tools.isPositionID(positionID) || !positionList.isEmptyPosition(positionID)) {
-                if (!positionList.isEmptyPosition(positionID)) {
+                if (!Tools.isPositionID(positionID) || !positionList.isExist(positionID)) {
+                    System.out.println("---Nhap sai---");
+                } else if (!positionList.isEmptyPosition(positionID)) {
                     System.out.println("---Ke da chua hang---");
                 }
                 System.out.print("Nhap ID ke chua: ");
@@ -307,10 +318,19 @@ public class Manager {
             date = Tools.scan.nextLine();
         }
 
-        System.out.print("Xuat den: ");
+        System.out.print("ID nha phan phoi: ");
         String to = Tools.scan.nextLine();
-        System.out.print("Nguoi chiu trach nhiem: ");
+        while (!Tools.isDistributorID(to)) {
+            System.out.print("ID nha phan phoi: ");
+            to = Tools.scan.nextLine();
+        }
+
+        System.out.print("ID nhan vien: ");
         String respond = Tools.scan.nextLine();
+        while (!Tools.isStaffID(respond)) {
+            System.out.print("ID nhan vien: ");
+            respond = Tools.scan.nextLine();
+        }
 
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
         char option = Tools.scan.nextLine().charAt(0);
@@ -348,7 +368,7 @@ public class Manager {
 
         System.out.println("Nhap thong tin san pham:");
         for (int i = 1; i <= n; i++) {
-            System.out.println(i + ")");
+            System.out.println("(" + i + ")");
 
             System.out.print("Nhap ID san pham: ");
             String productID = Tools.scan.nextLine();
@@ -363,7 +383,7 @@ public class Manager {
                 System.out.println("---San pham khong co trong kho---");
             } else {
                 long amount = productList.get(proIndex).getAmount();
-                System.out.printf("Con %l san pham trong kho.\n", amount);
+                System.out.printf("Con %ld san pham trong kho.\n", amount);
                 System.out.print("Nhap so luong xuat di: ");
                 String aStr = Tools.scan.nextLine();
                 while (!Tools.isLong(aStr)) {
@@ -453,10 +473,10 @@ public class Manager {
             }
             case 4: {
                 System.out.print("Nhap ID vi tri: ");
-                String posID = Tools.scan.next();
+                String posID = Tools.scan.nextLine();
                 while (!Tools.isPositionID(posID)) {
                     System.out.print("Nhap ID vi tri: ");
-                    posID = Tools.scan.next();
+                    posID = Tools.scan.nextLine();
                 }
 
                 if (positionList.isExist(posID)) {
@@ -467,10 +487,10 @@ public class Manager {
                         System.out.println("So ngay ton kho: " + linkList.get(linkIndex).getDays());
 
                         System.out.print("Nhap ID vi tri chuyen den: ");
-                        String modifyPosID = Tools.scan.next();
+                        String modifyPosID = Tools.scan.nextLine();
                         while (!Tools.isPositionID(posID)) {
                             System.out.print("Nhap ID vi tri chuyen den: ");
-                            modifyPosID = Tools.scan.next();
+                            modifyPosID = Tools.scan.nextLine();
                         }
 
                         if (positionList.isEmptyPosition(modifyPosID)) {

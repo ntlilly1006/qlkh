@@ -10,7 +10,7 @@ import java.util.*;
 public class Invoice {
 
     private char iE; //I: Nhap | E: Xuat
-    private String invoiceID; //X0000000
+    private String invoiceID; //X00
     private String date;
     private String prepareBy;
     private String receivedBy;
@@ -85,7 +85,7 @@ public class Invoice {
 
         do {
             System.out.print("Nhap vao kho (I) hay xuat khoi kho (E): ");
-            iE = Tools.scan.next().charAt(0);
+            iE = Tools.scan.nextLine().charAt(0);
         } while (iE != 'I' && iE != 'E');
 
         do {

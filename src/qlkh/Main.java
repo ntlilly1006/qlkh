@@ -1,18 +1,12 @@
 package qlkh;
 
 /**
- * PositionID: A01 - Z99
- * ProductID: P01 - P99
- * InvoiceID: I01 - I99 / E01 - E99
- * StaffID: NV01 - NV99
- * SupplierID: S01 - S99
- * DistributorID: D01 - D99
  *
  * @author Lilly
  */
 public class Main {
-
-    public static void main(String[] args) {
+    
+        public static void main(String[] args) {
         Manager manager = new Manager();
         staffMenu(manager);
     }
@@ -66,6 +60,7 @@ public class Main {
 //        }
 //        adminMenu(manager);
 //    }
+
     public static void staffMenu(Manager manager) {
         Tools.cls();
         System.out.println("---QUAN LY KHO HANG THIET BI DIEN TU---");
