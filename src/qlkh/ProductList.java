@@ -44,13 +44,19 @@ public class ProductList {
 		product[this.size] = element;
 		this.size++;
 	}
-	
+
 	// -----Add products entered by users-----
 	public void add() {
 		Product obj = new Product();
 		obj.enter();
 		add(obj);
 		writeToFile();
+	}
+	
+	// -----Add for Nhan
+	public void add(String productId) {
+		productId.enterNoAmount();
+		
 	}
 
 	// -----Modify product-----
@@ -76,12 +82,12 @@ public class ProductList {
 	public boolean modify(String productID, long newAmount) {
 		int index = findIndex(productID);
 		if (index != -1) {
-                    product[index].setAmount(newAmount);
-                    return true;
+			product[index].setAmount(newAmount);
+			return true;
 		}
-                return false;
+		return false;
 	}
-        
+
 	// -----Modify products-----
 	public int modify() {
 		int check = -1;
@@ -524,8 +530,7 @@ public class ProductList {
 		return newProduct;
 	}
 
-	public boolean readFromFile() throws IOException {
-		ProductList ob = new ProductList();
+	public boolean readFromFile()  {
 		try {
 			File myObj = new File(filePath);
 			if (myObj.length() == 0) {
@@ -536,7 +541,7 @@ public class ProductList {
 			product = new Product[this.size];
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
-				ob.add(ob.dataToObject(data));
+				add(dataToObject(data));
 			}
 			myReader.close();
 			System.out.println("Read from file Successfully.");
@@ -574,13 +579,13 @@ public class ProductList {
 	public void defaultProducts() {
 		// Default products
 		product = new Product[4];
-		product[0] = new Laptop("002", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+		product[0] = new Laptop("P02", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
 				"256gb", "Trang", 13.3, 2);
-		product[1] = new SmartWatch("001", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+		product[1] = new SmartWatch("P001", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
 				"256gb", "Trang", 13.3, 2);
-		product[2] = new SmartPhone("004", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+		product[2] = new SmartPhone("P04", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
 				"256gb", "Trang", 13.3, 2);
-		product[3] = new Laptop("003", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
+		product[3] = new Laptop("P03", "Dell Inspiron", "Dell", "12/10/2003", "Cai", 12, 12.000, "Nvidia", "Intel",
 				"256gb", "Trang", 13.3, 2);
 		writeToFile();
 	}
@@ -589,36 +594,41 @@ public class ProductList {
 		String choice;
 		do {
 			System.out.println("----------MENU----------");
-			System.out.println("(1) Sua.");
-			System.out.println("(2) Xoa.");
-			System.out.println("(3) Tim kiem.");
-			System.out.println("(4) Sap xep.");
-			System.out.println("(5) Hien thi danh sach san pham.");
+			System.out.println("(1) Them.");
+			System.out.println("(2) Sua.");
+			System.out.println("(3) Xoa.");
+			System.out.println("(4) Tim kiem.");
+			System.out.println("(5) Sap xep.");
+			System.out.println("(6) Hien thi danh sach san pham.");
 			System.out.println("(0) Thoat.");
-			System.out.println("Chon 1 so (0->5)");
+			System.out.println("Chon 1 so (0->6)");
 			choice = sc.nextLine();
-			while (!isInteger(choice) || Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 5) {
+			while (!isInteger(choice) || Integer.parseInt(choice) < 0 || Integer.parseInt(choice) > 6) {
 				System.out.println("Khong hop le! Nhap lai: ");
 				choice = sc.nextLine();
 			}
 			switch (Integer.parseInt(choice)) {
 			case 1: {
-				modify();
+				add();
 				break;
 			}
 			case 2: {
-				delete();
+				modify();
 				break;
 			}
 			case 3: {
-				findProduct1();
+				delete();
 				break;
 			}
 			case 4: {
-				sort();
+				findProduct1();
 				break;
 			}
 			case 5: {
+				sort();
+				break;
+			}
+			case 6: {
 				showList();
 				break;
 			}
@@ -654,9 +664,9 @@ public class ProductList {
 	public void setProduct(Product[] product) {
 //		product = product;
 	}
-        
-        public Product get(int index) {
-            return product[index];
-        }
+
+	public Product get(int index) {
+		return product[index];
+	}
 
 }

@@ -58,6 +58,29 @@ public class Product implements Comparable<Product> {
 		sc.nextLine();
 		return 0;
 	}
+	
+	public int enterNoAmount() {
+		System.out.println("Nhap id: ");
+		this.id = sc.nextLine();
+		System.out.println("Nhap ten san pham: ");
+		this.name = sc.nextLine();
+		System.out.println("Nhap thuong hieu: ");
+		this.brand = sc.nextLine();
+		do {
+			System.out.println("Nhap ngay san xuat (dd/mm/yyyy): ");
+			this.manufacturingDate = sc.nextLine();
+			if(!Tools.isDate(this.manufacturingDate))
+				System.out.println("Nhap sai dinh dang! Nhap lai ngay san xuat (dd/mm/yyyy): ");
+			else 
+				break;
+		} while (true);
+		System.out.println("Nhap don vi tinh: ");
+		this.unit = sc.nextLine();
+		System.out.println("Nhap gia: ");
+		this.price = sc.nextDouble();
+		sc.nextLine();
+		return 0;
+	}
 
 	public void title() {
 		System.out.printf("%-11s%-18s%-18s%-20s%-22s%-20s%-17s%-20s", "Id", "Ten", "Phan loai", "Thuong hieu",
