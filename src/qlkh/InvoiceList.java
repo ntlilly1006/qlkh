@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Default init
  *
  * @author Lilly
  */
@@ -64,40 +63,66 @@ public class InvoiceList {
             }
         } catch (FileNotFoundException ex) {
             // --Default init--
-//            Invoice e1 = new Invoice('I', "I0000001", "11/11/2022", "AiN", "TGDD");
-//            Invoice e2 = new Invoice('I', "I0000010", "10/11/2022", "Ken", "TGDD");
-//            Invoice e3 = new Invoice('I', "I0000011", "10/11/2022", "AiN", "DMX");
-//            Invoice e4 = new Invoice('I', "I0000100", "11/11/2022", "Ken", "DMX");
-//            Invoice e5 = new Invoice('I', "I0000101", "11/11/2022", "AiN", "CPS");
-//            Invoice e6 = new Invoice('E', "E0000110", "10/11/2022", "Ken", "FPT");
-//            Invoice e7 = new Invoice('E', "E0000111", "10/11/2022", "AiN", "FPT");
-//            Invoice e8 = new Invoice('E', "E0001000", "11/11/2022", "Ken", "PV");
-//            Invoice e9 = new Invoice('E', "E0001001", "11/11/2022", "AiN", "PV");
-//            Invoice e10 = new Invoice('E', "E0001010", "10/11/2022", "Ken", "CPS");
-//
-//            ArrayList<ProductInvoice> list = new ArrayList<>();
-//            e1.setProductList(list);
-//            e2.setProductList(list);
-//            e3.setProductList(list);
-//            e4.setProductList(list);
-//            e5.setProductList(list);
-//            e6.setProductList(list);
-//            e7.setProductList(list);
-//            e8.setProductList(list);
-//            e9.setProductList(list);
-//            e10.setProductList(list);
-//            
-//            invoiceList.add(e1);
-//            invoiceList.add(e2);
-//            invoiceList.add(e3);
-//            invoiceList.add(e4);
-//            invoiceList.add(e5);
-//            invoiceList.add(e6);
-//            invoiceList.add(e7);
-//            invoiceList.add(e8);
-//            invoiceList.add(e9);
-//            invoiceList.add(e10);
-
+            Invoice e1 = new Invoice('I', "I01", "11/11/2022", "staff01", "S01");
+            e1.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e1.addMoreProduct("P03", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e1.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e1.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e1);
+            
+            Invoice e2 = new Invoice('I', "I02", "12/11/2022", "staff02", "S03");
+            e2.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e2.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e2.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e2.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e2);
+            
+            Invoice e3 = new Invoice('I', "I03", "14/11/2022", "staff01", "S05");
+            e3.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e3.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e3.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e3);
+            
+            Invoice e4 = new Invoice('I', "I04", "17/11/2022", "staff02", "S09");
+            e4.addMoreProduct("P09", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e4.addMoreProduct("P10", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e4);
+            
+            Invoice e5 = new Invoice('I', "I05", "19/11/2022", "staff01", "S07");
+            e5.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e5.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e5.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e5);
+            
+            Invoice e6 = new Invoice('E', "E01", "13/11/2022", "staff02", "D02");
+            e6.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e6.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e6.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e6);
+            
+            Invoice e7 = new Invoice('E', "E02", "15/11/2022", "staff01", "D04");
+            e7.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e7.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e7);
+            
+            Invoice e8 = new Invoice('E', "E03", "18/11/2022", "staff02", "D06");
+            e8.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e8.addMoreProduct("P03", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e8.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e8.addMoreProduct("P09", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e7);
+            
+            Invoice e9 = new Invoice('E', "E04", "20/11/2022", "staff01", "D03");
+            e9.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e9.addMoreProduct("P10", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e9);
+            
+            Invoice e10 = new Invoice('E', "E10", "21/11/2022", "staff02", "D07");
+            e10.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e10.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e10.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            invoiceList.add(e10);
+            
             writeToFile();
         } finally {
             try {
@@ -208,7 +233,7 @@ public class InvoiceList {
 
         Invoice element = new Invoice();
         element.enter();
-            
+
         if (!add(element) || isExist(element.getInvoiceID())) {
             System.out.println("---Them khong thanh cong---");
             return false;
@@ -497,7 +522,7 @@ public class InvoiceList {
             }
         }
     }
-    
+
 // --Write to file--    
     public boolean writeToFile() {
         File file = null;

@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Default init
  *
  * @author Lilly
  */
@@ -50,17 +49,7 @@ public class Manager {
         } catch (FileNotFoundException ex) {
             // --Default init--
 //            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-//            
-            writeToFile();
+//            writeToFile();
         } finally {
             try {
                 if (scanFile != null) {

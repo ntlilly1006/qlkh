@@ -16,19 +16,55 @@ public class Tools {
 
 // --Functions check------------------------------------------------------------    
     // --StaffID--
-    public static boolean isStaffID(String productID) {
+    public static boolean isStaffID(String staffID) {
+        if (staffID.length() != 7) {
+            return false;
+        }
+
+        if (!staffID.startsWith("staff")) {
+            return false;
+        }
+
+        String temp = staffID.substring(5);
+        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+            return false;
+        }
 
         return true;
     }
 
     // --SupplierID--
-    public static boolean isSupplierID(String productID) {
+    public static boolean isSupplierID(String supplierID) {
+        if (supplierID.length() != 3) {
+            return false;
+        }
+
+        if (supplierID.charAt(0) != 'S') {
+            return false;
+        }
+
+        String temp = supplierID.substring(1);
+        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+            return false;
+        }
 
         return true;
     }
 
     // --DistributorID--
-    public static boolean isDistributorID(String productID) {
+    public static boolean isDistributorID(String distributorID) {
+        if (distributorID.length() != 3) {
+            return false;
+        }
+
+        if (distributorID.charAt(0) != 'D') {
+            return false;
+        }
+
+        String temp = distributorID.substring(1);
+        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+            return false;
+        }
 
         return true;
     }
@@ -54,13 +90,25 @@ public class Tools {
 
     // --ProductID--
     public static boolean isProductID(String productID) {
+        if (productID.length() != 3) {
+            return false;
+        }
+
+        if (productID.charAt(0) != 'P') {
+            return false;
+        }
+
+        String temp = productID.substring(1);
+        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+            return false;
+        }
 
         return true;
     }
 
-    // --InvoiceID--X0000000--
+    // --InvoiceID--X00--
     public static boolean isInvoiceID(String invoiceID) {
-        if (invoiceID.length() != 8) {
+        if (invoiceID.length() != 3) {
             return false;
         }
 
@@ -68,7 +116,8 @@ public class Tools {
             return false;
         }
 
-        if (!isLong(invoiceID.substring(1)) && invoiceID.equalsIgnoreCase("I0000000") && invoiceID.equalsIgnoreCase("E0000000")) {
+        String temp = invoiceID.substring(1);
+        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
             return false;
         }
 

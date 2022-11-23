@@ -177,7 +177,7 @@ public class Invoice {
 
 // --Console: Display table--   
     public void display() {
-        System.out.printf("|   %-12s| %-12s|   %-6s| %-13| %-14s|\n", invoiceID, date, (iE == 'I') ? "Nhap" : "Xuat", prepareBy, receivedBy);
+        System.out.printf("|   %-12s| %-12s|   %-7s| %-13s| %-14s|\n", invoiceID, date, (iE == 'I') ? "Nhap" : "Xuat", prepareBy, receivedBy);
     }
 
 // --String to write to file--
@@ -238,6 +238,7 @@ public class Invoice {
 
     public void setProductList(ArrayList<ProductInvoice> productListInvoice) {
         this.productListInvoice = productListInvoice;
+        getTotalPrice();
     }
 
     public ProductInvoice getProduct(int index) {
