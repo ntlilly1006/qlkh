@@ -117,7 +117,7 @@ public class InvoiceList {
             e9.addMoreProduct("P10", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e9);
             
-            Invoice e10 = new Invoice('E', "E10", "21/11/2022", "staff02", "D07");
+            Invoice e10 = new Invoice('E', "E05", "21/11/2022", "staff02", "D07");
             e10.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e10.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e10.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);

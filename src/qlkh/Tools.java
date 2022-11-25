@@ -89,6 +89,24 @@ public class Tools {
     }
 
     // --ProductID--
+    public static String isProductID() {
+        String productId;
+        System.out.println("Nhap id (VD: P01): ");
+        do {
+            productId = scan.nextLine();
+            productId = productId.toUpperCase();
+            productId = productId.trim();
+            String numId = productId.substring(1);
+            if (!productId.startsWith("P") || productId.endsWith("00") || !isInteger(numId) || productId.length() != 3
+                    || productId == null) {
+                System.out.println("Sai dinh dang! Nhap lai id (VD: P01): ");
+            } else {
+                break;
+            }
+        } while (true);
+        return productId;
+    }
+
     public static boolean isProductID(String productID) {
         if (productID.length() != 3) {
             return false;

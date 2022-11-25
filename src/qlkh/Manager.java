@@ -38,18 +38,20 @@ public class Manager {
                 }
                 if (E.length >= 5) {
                     if (Tools.isPositionID(E[0]) && Tools.isProductID(E[1]) && Tools.isLong(E[2]) && Tools.isDate(E[3])) {
-                        ContainLink element = new ContainLink(E[0], E[1], Long.parseLong(E[2]), E[3]);
-                        if (Tools.isBoolean(E[4])) {
-                            element.setStatus(Boolean.parseBoolean(E[4]));
+                        addLink(E[0], E[1], Long.parseLong(E[2]), E[3]);
+                        if (E[4].equalsIgnoreCase("false")) {
+                            disableLink(linkList.get(linkList.size() - 1).getPositionID());
                         }
-                        linkList.add(element);
                     }
                 }
             }
         } catch (FileNotFoundException ex) {
             // --Default init--
-//            
-//            writeToFile();
+            addLink("A01", "P01", 12, "06/10/2022");
+            addLink("A02", "P02", 12, "06/10/2022");
+            addLink("A03", "P03", 20, "06/10/2022");
+            addLink("A04", "P04", 4, "06/10/2022");
+            writeToFile();
         } finally {
             try {
                 if (scanFile != null) {
@@ -119,22 +121,37 @@ public class Manager {
     }
 
 // --Disable contain links and write to file--
-    private boolean disableLink(String productID, long amount) {
-
-        writeToFile();
-        return true;
-    }
-
-// --Disable contain links and write to file--
     private boolean disableLink(String positionID) {
         int index = findLinkByPosition(positionID, true);
         if (index != -1) {
-            linkList.get(index).setStatus(false);
+            ContainLink e = linkList.get(index);
+            e.setStatus(false);
+            linkList.set(index, e);
             positionList.modify(positionID, true);
             writeToFile();
             return true;
         }
         return false;
+    }
+
+// --Disable contain links and write to file--
+    private boolean disableLink(String productID, long amount) {
+        int index = findLinkByProduct(productID, true);
+        if (index == -1) {
+            return false;
+        }
+        while (amount > 0 && index != -1) {
+            if (amount >= linkList.get(index).getAmount()) {
+                amount -= linkList.get(index).getAmount();
+                disableLink(linkList.get(index).getPositionID());
+                index = findLinkByProduct(productID, true);
+            } else {
+                amount = linkList.get(index).getAmount() - amount;
+                linkList.get(index).setAmount(amount);
+            }
+        }
+        writeToFile();
+        return true;
     }
 
 // --Console: Display inventory list--
@@ -254,19 +271,22 @@ public class Manager {
 
             // --Get product index--
             int proIndex = productList.findIndex(productID);
+            long amount;
             if (-1 == proIndex) {
                 System.out.println("San pham nhap lan dau. Vui long nhap thong tin san pham.");
-                productList.add(productID);
+                productList.add();
                 proIndex = productList.findIndex(productID);
-            }
-
-            System.out.print("Nhap so luong nhap vao: ");
-            String aStr = Tools.scan.nextLine();
-            while (!Tools.isLong(aStr)) {
+                amount = productList.get(proIndex).getAmount();
+                productList.get(proIndex).setAmount(0);
+            } else {
                 System.out.print("Nhap so luong nhap vao: ");
-                aStr = Tools.scan.nextLine();
+                String aStr = Tools.scan.nextLine();
+                while (!Tools.isLong(aStr)) {
+                    System.out.print("Nhap so luong nhap vao: ");
+                    aStr = Tools.scan.nextLine();
+                }
+                amount = Long.parseLong(aStr);
             }
-            long amount = Long.parseLong(aStr);
 
             System.out.print("Nhap ID ke chua: ");
             String positionID = Tools.scan.nextLine();
@@ -282,15 +302,18 @@ public class Manager {
 
             // --Create a contain link--Update product list--Create an invoice (If)--
             if (addLink(positionID, productID, amount, date)) {
-                System.out.println("---Nhap thanh cong---");
                 long newAmount = productList.get(proIndex).getAmount() + amount;
                 productList.modify(productID, newAmount);
                 if (invoice != null) {
                     invoice.addMoreProduct(productID, productList.get(proIndex).getUnit(), amount, productList.get(proIndex).getPrice());
                 }
+                System.out.println("---Nhap thanh cong---");
             } else {
                 System.out.println("---Nhap khong thanh cong---");
             }
+        }
+        if (invoice != null) {
+            invoiceList.add(invoice);
         }
         System.out.println("---HOAN TAT NHAP HANG---");
         return true;
@@ -341,10 +364,10 @@ public class Manager {
             invoice = new Invoice('E', invoiceID, date, respond, to);
         }
 
-        System.out.print("Nhap tong so san pham xuat di:");
+        System.out.print("Nhap tong so san pham xuat di: ");
         String nStr = Tools.scan.nextLine();
         while (!Tools.isInteger(nStr)) {
-            System.out.print("Nhap tong so san pham xuat di:");
+            System.out.print("Nhap tong so san pham xuat di: ");
             nStr = Tools.scan.nextLine();
         }
         int n = Integer.parseInt(nStr);
@@ -372,7 +395,7 @@ public class Manager {
                 System.out.println("---San pham khong co trong kho---");
             } else {
                 long amount = productList.get(proIndex).getAmount();
-                System.out.printf("Con %ld san pham trong kho.\n", amount);
+                System.out.println("Con " + amount + " san pham trong kho.");
                 System.out.print("Nhap so luong xuat di: ");
                 String aStr = Tools.scan.nextLine();
                 while (!Tools.isLong(aStr)) {
@@ -395,6 +418,9 @@ public class Manager {
 
                 System.out.println("---Xuat thanh cong---");
             }
+        }
+        if (invoice != null) {
+            invoiceList.add(invoice);
         }
         System.out.println("---HOAN TAT XUAT HANG---");
         return true;

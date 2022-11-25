@@ -41,9 +41,9 @@ public class PositionList {
             }
         } catch (FileNotFoundException ex) {
             // --Default init--
-            for (short a = 0; a < 10; a++) {
+            for (short a = 0; a < 4; a++) {
                 char area = (char) (65 + a);
-                for (short s = 0; s < 20;) {
+                for (short s = 0; s < 15;) {
                     Position element = new Position(area, ++s);
                     positionList.add(element);
                 }
