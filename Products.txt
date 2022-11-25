@@ -1,8 +1,0 @@
-id: 002, name: Dell Inspiron, type: LapTop, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 12, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 256gb, color: Trang, sizeScreen: 13.3, weight: 2.0.
-id: 001, name: Dell Latitude, type: SmartWatch, brand: Dell, manufacturingDate: 12/10/2003, unit: Chiec, amount: 07, price: 12.0, graphics: Gtx, cpu: Ryzon, sizeMemory: 512gb, color: Trang, sizeScreen: 15.6, weight: 2.0.
-id: 004, name: Dell Inspiron, type: SmartPhone, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 12, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 256gb, color: Trang, sizeScreen: 13.3, weight: 2.0.
-id: 003, name: HP Pavilion, type: LapTop, brand: HP, manufacturingDate: 12/10/2003, unit: Cai, amount: 12, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 256gb, color: Den, sizeScreen: 13.3, weight: 2.0.
-id: 005, name: Dell Inspiron, type: LapTop, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 03, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 1Tb, color: Trang, sizeScreen: 15.6, weight: 2.0.
-id: 007, name: HP Pavilion, type: SmartWatch, brand: HP, manufacturingDate: 12/10/2003, unit: Chiec, amount: 12, price: 12.0, graphics: Gtx, cpu: Ryzon, sizeMemory: 512gb, color: Do, sizeScreen: 13.3, weight: 2.0.
-id: 008, name: Dell Latitude, type: SmartPhone, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 10, price: 12.0, graphics: Nvidia, Ryzon: Intel, sizeMemory: 256gb, color: Bach kim, sizeScreen: 13.3, weight: 2.0.
-id: 010, name: Dell Inspiron, type: LapTop, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 05, price: 12.0, graphics: Gtx, cpu: Ryzon, sizeMemory: 512gb, color: Den, sizeScreen: 15.6, weight: 2.0.

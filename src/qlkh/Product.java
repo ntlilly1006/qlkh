@@ -4,180 +4,185 @@ import java.io.Serializable;
 import java.util.Scanner;
 
 public class Product implements Comparable<Product> {
-	protected String id; // mã sản phẩm
-	protected String name; // tên sản phẩm
-	protected String type; // phân loại
-	protected String brand; // thương hiệu
-	protected String manufacturingDate;// ngày sản xuất
-	protected String unit; // đơn vị tính
-	protected long amount; // số lượng tổng
-	protected double price; // giá thành
-	static Scanner sc = new Scanner(System.in);
-	Details detail = new Details();
 
-	public Product() {
-	}
+    protected String id; // mã sản phẩm
+    protected String name; // tên sản phẩm
+    protected String type; // phân loại
+    protected String brand; // thương hiệu
+    protected String manufacturingDate;// ngày sản xuất
+    protected String unit; // đơn vị tính
+    protected long amount; // số lượng tổng
+    protected double price; // giá thành
+    Details detail = new Details();
 
-	public Product(String id, String name, String brand, String manufacturingDate, String unit, long amount,
-			double price) {
-		this.id = id;
-		this.name = name;
-		this.brand = brand;
-		this.manufacturingDate = manufacturingDate;
-		this.unit = unit;
-		this.amount = amount;
-		this.price = price;
-	}
+    public Product() {
+    }
 
-	public Product(Product other) {
+    public Product(String id, String name, String type, String brand, String manufacturingDate, String unit,
+            long amount, double price) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.brand = brand;
+        this.manufacturingDate = manufacturingDate;
+        this.unit = unit;
+        this.amount = amount;
+        this.price = price;
+    }
 
-	}
+    public Product(Product other) {
 
-	// ------------------------------------------------------------------------------
-	public int enter() {
-		System.out.println("Nhap id: ");
-		this.id = sc.nextLine();
-		System.out.println("Nhap ten san pham: ");
-		this.name = sc.nextLine();
-		System.out.println("Nhap thuong hieu: ");
-		this.brand = sc.nextLine();
-		do {
-			System.out.println("Nhap ngay san xuat (dd/mm/yyyy): ");
-			this.manufacturingDate = sc.nextLine();
-			if(!Tools.isDate(this.manufacturingDate))
-				System.out.println("Nhap sai dinh dang! Nhap lai ngay san xuat (dd/mm/yyyy): ");
-			else 
-				break;
-		} while (true);
-		System.out.println("Nhap don vi tinh: ");
-		this.unit = sc.nextLine();
-		System.out.println("Nhap so luong: ");
-		this.amount = sc.nextLong();
-		System.out.println("Nhap gia: ");
-		this.price = sc.nextDouble();
-		sc.nextLine();
-		return 0;
-	}
-	
-	public int enterNoAmount() {
-		System.out.println("Nhap id: ");
-		this.id = sc.nextLine();
-		System.out.println("Nhap ten san pham: ");
-		this.name = sc.nextLine();
-		System.out.println("Nhap thuong hieu: ");
-		this.brand = sc.nextLine();
-		do {
-			System.out.println("Nhap ngay san xuat (dd/mm/yyyy): ");
-			this.manufacturingDate = sc.nextLine();
-			if(!Tools.isDate(this.manufacturingDate))
-				System.out.println("Nhap sai dinh dang! Nhap lai ngay san xuat (dd/mm/yyyy): ");
-			else 
-				break;
-		} while (true);
-		System.out.println("Nhap don vi tinh: ");
-		this.unit = sc.nextLine();
-		System.out.println("Nhap gia: ");
-		this.price = sc.nextDouble();
-		sc.nextLine();
-		return 0;
-	}
+    }
 
-	public void title() {
-		System.out.printf("%-11s%-18s%-18s%-20s%-22s%-20s%-17s%-20s", "Id", "Ten", "Phan loai", "Thuong hieu",
-				"Ngay san xuat", "Don vi tinh", "So luong", "Gia");
-		detail.title();
-	}
+// -----------------------------------------------------------------------------
+    public int enter() {
+        this.id = Tools.isProductID();
+        System.out.println("Ten san pham: ");
+        this.name = Tools.scan.nextLine();
+        System.out.println("Thuong hieu: ");
+        this.brand = Tools.scan.nextLine();
+        do {
+            System.out.println("Nhap ngay san xuat (dd/mm/yyyy): ");
+            this.manufacturingDate = Tools.scan.nextLine();
+            if (!Tools.isDate(this.manufacturingDate)) {
+                System.out.println("Nhap sai dinh dang! Nhap lai ngay san xuat (dd/mm/yyyy): ");
+            } else {
+                break;
+            }
+        } while (true);
+        System.out.println("Nhap don vi tinh: ");
+        this.unit = Tools.scan.nextLine();
+        System.out.println("Nhap so luong: ");
+        this.amount = Tools.scan.nextLong();
+        System.out.println("Nhap don gia: ");
+        this.price = Tools.scan.nextDouble();
+        Tools.scan.nextLine();
+        return 0;
+    }
 
-	public void display() {
-		System.out.printf("%-11s%-18s%-18s%-20s%-22s%-20s%-17s%-20s", this.id, this.name, this.type, this.brand,
-				this.manufacturingDate, this.unit, this.amount, this.price);
-	}
+    public int enterNoAmount(String iD) {
+        this.id = iD;
+//        this.type = type;
+        this.amount = 0;
+        System.out.println("Nhap ten san pham: ");
+        this.name = Tools.scan.nextLine();
+        System.out.println("Nhap thuong hieu: ");
+        this.brand = Tools.scan.nextLine();
+        do {
+            System.out.println("Nhap ngay san xuat (dd/mm/yyyy): ");
+            this.manufacturingDate = Tools.scan.nextLine();
+            if (!Tools.isDate(this.manufacturingDate)) {
+                System.out.println("Nhap sai dinh dang! Nhap lai ngay san xuat (dd/mm/yyyy): ");
+            } else {
+                break;
+            }
+        } while (true);
+        System.out.println("Nhap don vi tinh: ");
+        this.unit = Tools.scan.nextLine();
+        System.out.println("Nhap don gia: ");
+        this.price = Tools.scan.nextDouble();
+        Tools.scan.nextLine();
+        return 0;
+    }
 
-	// --Get-Set---------------------------------------------------------------------
-	public String getId() {
-		return id;
-	}
+    public void title() {
+        System.out.printf("%-11s%-18s%-18s%-20s%-22s%-20s%-17s%-20s", "Id", "Ten", "Phan loai", "Thuong hieu",
+                "Ngay san xuat", "Don vi tinh", "So luong", "Gia");
+        detail.title();
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void display() {
+        System.out.printf("%-11s%-18s%-18s%-20s%-22s%-20s%-17s%-20s", this.id, this.name, this.type, this.brand,
+                this.manufacturingDate, this.unit, this.amount, this.price);
+    }
 
-	public String getName() {
-		return name;
-	}
+    // --Get-Set---------------------------------------------------------------------
+    public String getId() {
+        return id;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setBrand(String brand) {
-		this.brand = brand;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public String getManufacturingDate() {
-		return manufacturingDate;
-	}
+    public String getBrand() {
+        return brand;
+    }
 
-	public void setManufacturingDate(String manufacturingDate) {
-		this.manufacturingDate = manufacturingDate;
-	}
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
-	public String getUnit() {
-		return unit;
-	}
+    public String getManufacturingDate() {
+        return manufacturingDate;
+    }
 
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+    public void setManufacturingDate(String manufacturingDate) {
+        this.manufacturingDate = manufacturingDate;
+    }
 
-	public long getAmount() {
-		return amount;
-	}
+    public String getUnit() {
+        return unit;
+    }
 
-	public void setAmount(long amount) {
-		this.amount = amount;
-	}
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public long getAmount() {
+        return amount;
+    }
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
+    public void setAmount(long amount) {
+        this.amount = amount;
+    }
 
-	// -----Equals------------------------------------
-	public boolean equals(Product other) {
-		if (this == other)
-			return true;
-		if (!(other instanceof Product))
-			return false;
+    public double getPrice() {
+        return price;
+    }
 
-		Product o = (Product) other;
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
-		return Double.compare(this.price, o.price) == 0;
-	}
+    // -----Equals------------------------------------
+    public boolean equals(Product other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof Product)) {
+            return false;
+        }
 
-	@Override
-	public String toString() {
-		return "id: " + id + ", name: " + name + ", type: " + type + ", brand: " + brand + ", manufacturingDate: "
-				+ manufacturingDate + ", unit: " + unit + ", amount: " + amount + ", price: " + price + ", ";
-	}
+        Product o = (Product) other;
 
-	// -----Compare------------------------------------
-	public int compareTo(Product other) {
-		return this.getId().compareTo(other.getId());
-	}
+        return Double.compare(this.price, o.price) == 0;
+    }
+
+    @Override
+    public String toString() {
+        return "id: " + id + ", name: " + name + ", type: " + type + ", brand: " + brand + ", manufacturingDate: "
+                + manufacturingDate + ", unit: " + unit + ", amount: " + amount + ", price: " + price + ", ";
+    }
+
+    // -----Compare------------------------------------
+    public int compareTo(Product other) {
+        return this.getId().compareTo(other.getId());
+    }
 }
