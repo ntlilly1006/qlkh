@@ -19,6 +19,7 @@ public class SmartWatch extends Product {
 
 	public SmartWatch() {
 		this.detail = new Details();
+		this.type = "SmartWatch";
 	}
 
 	public int enter() {

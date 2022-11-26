@@ -3,7 +3,7 @@ package qlkh;
 import java.io.Serializable;
 import java.util.Scanner;
 
-public class Details implements Serializable{
+public class Details implements Serializable {
 
 	private String graphics;
 	private String cpu;
@@ -11,7 +11,7 @@ public class Details implements Serializable{
 	private String color;
 	private double sizeScreen;
 	private double weight;
-	
+
 	public Details(String graphics, String cpu, String sizeMemory, String color, double sizeScreen, double weight) {
 		this.graphics = graphics;
 		this.cpu = cpu;
@@ -35,10 +35,8 @@ public class Details implements Serializable{
 		this.sizeMemory = Tools.scan.nextLine();
 		System.out.println("Nhap mau: ");
 		this.color = Tools.scan.nextLine();
-		System.out.println("Nhap kich thuoc man hinh: ");
-		this.sizeScreen = Tools.scan.nextDouble();
-		System.out.println("Nhap trong luong: ");
-		this.weight = Tools.scan.nextDouble();
+		this.sizeScreen = Tools.isSize();
+		this.weight = Tools.isWeight();
 		Tools.scan.nextLine();
 		return 0;
 	}
@@ -106,7 +104,7 @@ public class Details implements Serializable{
 	@Override
 	public String toString() {
 		return "graphics: " + graphics + ", cpu: " + cpu + ", sizeMemory: " + sizeMemory + ", color: " + color
-				+ ", sizeScreen: " + sizeScreen + ", weight: " + weight  + ".";
+				+ ", sizeScreen: " + sizeScreen + ", weight: " + weight + ".";
 	}
 
 }

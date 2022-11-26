@@ -19,6 +19,7 @@ public class SmartPhone extends Product {
 
 	public SmartPhone() {
 		this.detail = new Details();
+		this.type = "SmartPhone";
 	}
 
 	public int enter() {

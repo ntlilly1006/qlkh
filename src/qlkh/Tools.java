@@ -10,213 +10,262 @@ import java.util.*;
  */
 public class Tools {
 // --Properties-----------------------------------------------------------------
-    // --Console scan--
+	// --Console scan--
 
-    public static Scanner scan = new Scanner(System.in);
+	public static Scanner scan = new Scanner(System.in);
 
 // --Functions check------------------------------------------------------------    
-    // --StaffID--
-    public static boolean isStaffID(String staffID) {
-        if (staffID.length() != 7) {
-            return false;
-        }
+	// --StaffID--
+	public static boolean isStaffID(String staffID) {
+		if (staffID.length() != 7) {
+			return false;
+		}
 
-        if (!staffID.startsWith("staff")) {
-            return false;
-        }
+		if (!staffID.startsWith("staff")) {
+			return false;
+		}
 
-        String temp = staffID.substring(5);
-        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
-            return false;
-        }
+		String temp = staffID.substring(5);
+		if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // --SupplierID--
-    public static boolean isSupplierID(String supplierID) {
-        if (supplierID.length() != 3) {
-            return false;
-        }
+	// --SupplierID--
+	public static boolean isSupplierID(String supplierID) {
+		if (supplierID.length() != 3) {
+			return false;
+		}
 
-        if (supplierID.charAt(0) != 'S') {
-            return false;
-        }
+		if (supplierID.charAt(0) != 'S') {
+			return false;
+		}
 
-        String temp = supplierID.substring(1);
-        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
-            return false;
-        }
+		String temp = supplierID.substring(1);
+		if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // --DistributorID--
-    public static boolean isDistributorID(String distributorID) {
-        if (distributorID.length() != 3) {
-            return false;
-        }
+	// --DistributorID--
+	public static boolean isDistributorID(String distributorID) {
+		if (distributorID.length() != 3) {
+			return false;
+		}
 
-        if (distributorID.charAt(0) != 'D') {
-            return false;
-        }
+		if (distributorID.charAt(0) != 'D') {
+			return false;
+		}
 
-        String temp = distributorID.substring(1);
-        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
-            return false;
-        }
+		String temp = distributorID.substring(1);
+		if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // --PositionID--X00--
-    public static boolean isPositionID(String positionID) {
-        if (positionID.length() != 3) {
-            return false;
-        }
+	// --PositionID--X00--
+	public static boolean isPositionID(String positionID) {
+		if (positionID.length() != 3) {
+			return false;
+		}
 
-        char area = positionID.charAt(0);
-        char shelf1 = positionID.charAt(1);
-        char shelf2 = positionID.charAt(2);
-        if (!(('A' <= area && area <= 'Z')
-                && ('0' <= shelf1 && shelf1 <= '9')
-                && ('0' <= shelf2 && shelf2 <= '9'))
-                || (shelf1 == 0 && shelf2 == 0)) {
-            return false;
-        }
+		char area = positionID.charAt(0);
+		char shelf1 = positionID.charAt(1);
+		char shelf2 = positionID.charAt(2);
+		if (!(('A' <= area && area <= 'Z') && ('0' <= shelf1 && shelf1 <= '9') && ('0' <= shelf2 && shelf2 <= '9'))
+				|| (shelf1 == 0 && shelf2 == 0)) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // --ProductID--
-    public static String isProductID() {
-        String productId;
-        System.out.println("Nhap id (VD: P01): ");
-        do {
-            productId = scan.nextLine();
-            productId = productId.toUpperCase();
-            productId = productId.trim();
-            String numId = productId.substring(1);
-            if (!productId.startsWith("P") || productId.endsWith("00") || !isInteger(numId) || productId.length() != 3
-                    || productId == null) {
-                System.out.println("Sai dinh dang! Nhap lai id (VD: P01): ");
-            } else {
-                break;
-            }
-        } while (true);
-        return productId;
-    }
+	// --ProductID--
+	public static String isProductID() {
+		String productId;
+		System.out.println("Nhap id (VD: P01): ");
+		do {
+			productId = scan.nextLine();
+			productId = productId.toUpperCase();
+			productId = productId.trim();
+			String numId = productId.substring(1);
+			if (!productId.startsWith("P") || productId.endsWith("00") || !isInteger(numId) || productId.length() != 3
+					|| productId == null) {
+				System.out.println("Sai dinh dang! Nhap lai id (VD: P01): ");
+			} else {
+				return productId;
+			}
+		} while (true);
+	}
 
-    public static boolean isProductID(String productID) {
-        if (productID.length() != 3) {
-            return false;
-        }
+	// --Long check (product)--
+	public static long isAmount() {
+		String l = null;
+		System.out.println("Nhap so luong: ");
+		do {
 
-        if (productID.charAt(0) != 'P') {
-            return false;
-        }
+			l = scan.nextLine();
+			if (!isLong(l) || l == null)
+				System.out.println("Sai dinh dang! Nhap lai: ");
+			else
+				return Long.parseLong(l);
+		} while (true);
+	}
 
-        String temp = productID.substring(1);
-        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
-            return false;
-        }
+	// --Double check(product)--
+	public static double isPrice() {
+		String d = null;
+		System.out.println("Nhap don gia: ");
+		do {
+			d = scan.nextLine();
+			if (!isDouble(d) || d == null)
+				System.out.println("Sai dinh dang! Nhap lai: ");
+			else
+				return Double.parseDouble(d);
+		} while (true);
+	}
 
-        return true;
-    }
+	public static double isSize() {
+		String s = null;
+		System.out.println("Nhap kich thuoc man hinh: ");
+		do {
 
-    // --InvoiceID--X00--
-    public static boolean isInvoiceID(String invoiceID) {
-        if (invoiceID.length() != 3) {
-            return false;
-        }
+			s = scan.nextLine();
+			if (!isDouble(s) || s == null)
+				System.out.println("Sai dinh dang! Nhap lai: ");
+			else
+				return Double.parseDouble(s);
+		} while (true);
+	}
 
-        if (invoiceID.charAt(0) != 'I' && invoiceID.charAt(0) != 'E') {
-            return false;
-        }
+	public static double isWeight() {
+		String w = null;
+		System.out.println("Nhap trong luong: ");
+		do {
+			w = scan.nextLine();
+			if (!isDouble(w) || w == null)
+				System.out.println("Sai dinh dang! Nhap lai: ");
+			else
+				return Double.parseDouble(w);
+		} while (true);
+	}
 
-        String temp = invoiceID.substring(1);
-        if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
-            return false;
-        }
+	public static boolean isProductID(String productID) {
+		if (productID.length() != 3) {
+			return false;
+		}
 
-        return true;
-    }
+		if (productID.charAt(0) != 'P') {
+			return false;
+		}
 
-    // --Unit--Cai-Chiec--
-    public static boolean isUnit(String unit) {
+		String temp = productID.substring(1);
+		if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+			return false;
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    // --Date format--dd/MM/yyyy--
-    public static boolean isDate(String date) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Calendar element = Calendar.getInstance();
-            element.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(date));
-            return true;
-        } catch (ParseException ex) {
-            return false;
-        }
-    }
+	// --InvoiceID--X00--
+	public static boolean isInvoiceID(String invoiceID) {
+		if (invoiceID.length() != 3) {
+			return false;
+		}
 
-    // --Interger check--
-    public static boolean isInteger(String element) {
-        try {
-            Integer.parseInt(element);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+		if (invoiceID.charAt(0) != 'I' && invoiceID.charAt(0) != 'E') {
+			return false;
+		}
 
-    // --Long check--
-    public static boolean isLong(String element) {
-        try {
-            Long.parseLong(element);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+		String temp = invoiceID.substring(1);
+		if (!isLong(temp) || temp.equalsIgnoreCase("00")) {
+			return false;
+		}
 
-    // --Double check--
-    public static boolean isDouble(String element) {
-        try {
-            Double.parseDouble(element);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+		return true;
+	}
 
-    // --Boolean check--
-    public static boolean isBoolean(String element) {
-        try {
-            Boolean.parseBoolean(element);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+	// --Unit--Cai-Chiec--
+	public static boolean isUnit(String unit) {
+
+		return true;
+	}
+
+	// --Date format--dd/MM/yyyy--
+	public static boolean isDate(String date) {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Calendar element = Calendar.getInstance();
+			element.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(date));
+			return true;
+		} catch (ParseException ex) {
+			return false;
+		}
+	}
+
+	// --Interger check--
+	public static boolean isInteger(String element) {
+		try {
+			Integer.parseInt(element);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	// --Long check--
+	public static boolean isLong(String element) {
+		try {
+			Long.parseLong(element);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	// --Double check--
+	public static boolean isDouble(String element) {
+		try {
+			Double.parseDouble(element);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	// --Boolean check--
+	public static boolean isBoolean(String element) {
+		try {
+			Boolean.parseBoolean(element);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 
 // --Methods--------------------------------------------------------------------
-    // --Press any key to continue--
-    public static void continute() {
-        System.out.println("\n---Nhan Enter de tiep tuc---");
-        Scanner scan = new Scanner(System.in);
-        String continute = scan.nextLine();
-    }
+	// --Press any key to continue--
+	public static void continute() {
+		System.out.println("\n---Nhan Enter de tiep tuc---");
+		Scanner scan = new Scanner(System.in);
+		String continute = scan.nextLine();
+	}
 
-    // --Clear sceen console--
-    public static void cls() {
-        try {
-            if (System.getProperty("os.name").contains("Windows")) {
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-            } else {
-                Runtime.getRuntime().exec("clear");
-            }
-        } catch (IOException | InterruptedException ex) {
-        }
-    }
+	// --Clear sceen console--
+	public static void cls() {
+		try {
+			if (System.getProperty("os.name").contains("Windows")) {
+				new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+			} else {
+				Runtime.getRuntime().exec("clear");
+			}
+		} catch (IOException | InterruptedException ex) {
+		}
+	}
 }
