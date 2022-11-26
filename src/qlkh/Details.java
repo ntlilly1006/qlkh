@@ -11,8 +11,7 @@ public class Details implements Serializable{
 	private String color;
 	private double sizeScreen;
 	private double weight;
-	static Scanner sc = new Scanner(System.in);
-
+	
 	public Details(String graphics, String cpu, String sizeMemory, String color, double sizeScreen, double weight) {
 		this.graphics = graphics;
 		this.cpu = cpu;
@@ -29,18 +28,18 @@ public class Details implements Serializable{
 //-----Nhap thong tin san pham----------------------------------------------------------------
 	public int enter() {
 		System.out.println("Nhap graphics: ");
-		this.graphics = sc.nextLine();
+		this.graphics = Tools.scan.nextLine();
 		System.out.println("Nhap cpu: ");
-		this.cpu = sc.nextLine();
+		this.cpu = Tools.scan.nextLine();
 		System.out.println("Nhap kich thuoc bo nho: ");
-		this.sizeMemory = sc.nextLine();
+		this.sizeMemory = Tools.scan.nextLine();
 		System.out.println("Nhap mau: ");
-		this.color = sc.nextLine();
+		this.color = Tools.scan.nextLine();
 		System.out.println("Nhap kich thuoc man hinh: ");
-		this.sizeScreen = sc.nextDouble();
+		this.sizeScreen = Tools.scan.nextDouble();
 		System.out.println("Nhap trong luong: ");
-		this.weight = sc.nextDouble();
-		sc.nextLine();
+		this.weight = Tools.scan.nextDouble();
+		Tools.scan.nextLine();
 		return 0;
 	}
 

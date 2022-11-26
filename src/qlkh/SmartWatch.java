@@ -1,9 +1,7 @@
 package qlkh;
 
-import java.util.Scanner;
-
 public class SmartWatch extends Product {
-	private Details detail;
+	private Details detail = null;
 
 	public SmartWatch(String id, String name, String brand, String manufacturingDate, String unit, long amount,
 			double price, String graphics, String cpu, String sizeMemory, String color, double sizeScreen,
@@ -20,6 +18,7 @@ public class SmartWatch extends Product {
 	}
 
 	public SmartWatch() {
+		this.detail = new Details();
 	}
 
 	public int enter() {

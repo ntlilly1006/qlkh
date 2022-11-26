@@ -1,9 +1,7 @@
 package qlkh;
 
-import java.util.Scanner;
-
 public class SmartPhone extends Product {
-	private Details detail ;
+	private Details detail = null;
 
 	public SmartPhone(String id, String name, String brand, String manufacturingDate, String unit, long amount,
 			double price, String graphics, String cpu, String sizeMemory, String color, double sizeScreen,
@@ -20,6 +18,7 @@ public class SmartPhone extends Product {
 	}
 
 	public SmartPhone() {
+		this.detail = new Details();
 	}
 
 	public int enter() {
@@ -32,6 +31,7 @@ public class SmartPhone extends Product {
 		super.title();
 		detail.title();
 	}
+
 	@Override
 	public String toString() {
 		return super.toString() + detail.toString();

@@ -1,11 +1,7 @@
 package qlkh;
 
-import java.util.Scanner;
-
-import org.w3c.dom.html.HTMLTitleElement;
-
 public class Laptop extends Product {
-	private Details detail;
+	private Details detail = null;
 
 	public Laptop(String id, String name, String brand, String manufacturingDate, String unit, long amount,
 			double price, String graphics, String cpu, String sizeMemory, String color, double sizeScreen,
@@ -22,11 +18,13 @@ public class Laptop extends Product {
 	}
 
 	public Laptop() {
+		this.detail = new Details();
 	}
 
 	public int enter() {
 		super.enter();
 		detail.enter();
+		setDetail(detail);
 		return 0;
 	}
 
