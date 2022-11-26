@@ -148,6 +148,7 @@ public class Manager {
             } else {
                 amount = linkList.get(index).getAmount() - amount;
                 linkList.get(index).setAmount(amount);
+                amount = 0;
             }
         }
         writeToFile();
