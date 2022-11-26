@@ -198,7 +198,7 @@ public class PositionList {
         System.out.print("Nhap ID: ");
         String positionID = Tools.scan.nextLine();
 //        while (!Tools.isPositionID(positionID)) {
-//            System.out.print("Nhap ID: ");
+//            System.out.print("Nhap ID (Vd A01): ");
 //            positionID = Tools.scan.nextLine();
 //        }
 
@@ -228,7 +228,7 @@ public class PositionList {
         System.out.printf("Nhap ID: ");
         String positionID = Tools.scan.nextLine();
         while (!Tools.isPositionID(positionID)) {
-            System.out.print("Nhap ID: ");
+            System.out.print("Nhap ID (Vd A01): ");
             positionID = Tools.scan.nextLine();
         }
         System.out.print("Nhap trang thai (1.Trong/0.Day): ");

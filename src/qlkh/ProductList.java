@@ -46,45 +46,6 @@ public class ProductList {
     }
 
     // -----Add products entered by users-----
-    public void addNoDetails(String productID) {
-        String choice;
-        Product obj = null;
-        System.out.println("Loai san pham:");
-        System.out.println("(1) LapTop");
-        System.out.println("(2) SmartPhone");
-        System.out.println("(3) SmartWatch");
-        System.out.println("Chon 1 so (1->3)");
-        choice = Tools.scan.nextLine();
-        while (!isInteger(choice) || Integer.parseInt(choice) < 1 || Integer.parseInt(choice) > 3) {
-            System.out.println("Khong hop le! Chon lai 1 so (1->3): ");
-            choice = Tools.scan.nextLine();
-        }
-        switch (Integer.parseInt(choice)) {
-            case 1: {
-                obj = new Laptop();
-                obj.enterNoAmount(productID);
-                add(obj);
-                break;
-            }
-            case 2: {
-                obj = new SmartWatch();
-                obj.enterNoAmount(productID);
-                add(obj);
-                break;
-            }
-            case 3: {
-                obj = new SmartWatch();
-                obj.enterNoAmount(productID);
-                add(obj);
-                break;
-            }
-            default:
-                System.out.println("Thoat!");
-        }
-        writeToFile();
-    }
-
-    // -----Add products entered by users-----
     public void add() {
         String choice;
         Product obj = null;
@@ -368,7 +329,7 @@ public class ProductList {
     public int findIndex(String id) {
         int index = -1;
         for (int i = 0; i < product.length; i++) {
-            if (product[i].getId().equalsIgnoreCase(id)) {
+            if (product[i] != null && product[i].getId().equalsIgnoreCase(id)) {
                 index = i;
             }
         }

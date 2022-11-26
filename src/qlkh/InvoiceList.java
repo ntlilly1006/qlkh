@@ -273,7 +273,7 @@ public class InvoiceList {
             return false;
         }
 
-        System.out.print("Nhap ID hoa don: ");
+        System.out.print("Nhap ID hoa don (Vd I01, E01, ...): ");
         String invoiceID = Tools.scan.nextLine();
 //        while (!Tools.isInvoiceID(invoiceID)) {
 //            System.out.print("Nhap ID hoa don: ");
@@ -356,10 +356,10 @@ public class InvoiceList {
     }
 
 // --Console: Show invoice by preparer--
-    private void showByPreparer(String name) {
+    private void showByPreparer(String iD) {
         boolean check = false;
         for (Invoice e : invoiceList) {
-            if (name.equalsIgnoreCase(e.getPrepareBy())) {
+            if (iD.equalsIgnoreCase(e.getPrepareBy())) {
                 check = true;
                 break;
             }
@@ -368,11 +368,11 @@ public class InvoiceList {
             System.out.println("---KHONG CO HOA DON THOA YEU CAU---");
             return;
         }
-        System.out.println("---HOA DON LAP BOI " + name + "---");
+        System.out.println("---HOA DON LAP BOI " + iD + "---");
         System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            if (name.equalsIgnoreCase(e.getPrepareBy())) {
+            if (iD.equalsIgnoreCase(e.getPrepareBy())) {
                 e.display();
             }
         }
@@ -380,10 +380,10 @@ public class InvoiceList {
     }
 
 // --Console: Show invoice by receiver--
-    private void showByReceiver(String name) {
+    private void showByReceiver(String iD) {
         boolean check = false;
         for (Invoice e : invoiceList) {
-            if (name.equalsIgnoreCase(e.getReceivedBy())) {
+            if (iD.equalsIgnoreCase(e.getReceivedBy())) {
                 check = true;
                 break;
             }
@@ -392,11 +392,11 @@ public class InvoiceList {
             System.out.println("---KHONG CO HOA DON THOA YEU CAU---");
             return;
         }
-        System.out.println("---HOA DON DO " + name + " NHAN---");
+        System.out.println("---HOA DON XUAT CHO " + iD + "---");
         System.out.println(" _______________ _____________ __________ ______________ _______________ ");
         System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
         for (Invoice e : invoiceList) {
-            if (name.equalsIgnoreCase(e.getReceivedBy())) {
+            if (iD.equalsIgnoreCase(e.getReceivedBy())) {
                 e.display();
             }
         }
@@ -453,21 +453,21 @@ public class InvoiceList {
                 break;
             }
             case 5 -> {
-                System.out.print("Nhap ten nguoi lap: ");
-                String name = Tools.scan.next();
-                showByPreparer(name);
+                System.out.print("Nhap ID nhan vien lap hoa don (Vd staff01): ");
+                String staffID = Tools.scan.next();
+                showByPreparer(staffID);
                 Tools.continute();
                 break;
             }
             case 6 -> {
-                System.out.print("Nhap ten nguoi nhan: ");
-                String name = Tools.scan.next();
-                showByReceiver(name);
+                System.out.print("Nhap ID nha cung cap hoac nha phan phoi nhan hoa don (Vd S01, D01, ...): ");
+                String iD = Tools.scan.next();
+                showByReceiver(iD);
                 Tools.continute();
                 break;
             }
             case 7 -> {
-                System.out.print("Nhap ID hoa don: ");
+                System.out.print("Nhap ID hoa don (Vd I01, E01, ...): ");
                 String invoiceID = Tools.scan.next();
                 int index = find(invoiceID);
                 if (-1 != index) {

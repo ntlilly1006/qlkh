@@ -5,7 +5,7 @@ package qlkh;
  *
  * @author Lilly
  */
-public class ProductInvoice {
+public class InvoiceProduct {
 
     private String productID;
     private String unit;
@@ -13,17 +13,17 @@ public class ProductInvoice {
     private double price;
 
 // --Constructor----------------------------------------------------------------    
-    public ProductInvoice() {
+    public InvoiceProduct() {
     }
 
-    public ProductInvoice(String productID, String unit, long amount, double price) {
+    public InvoiceProduct(String productID, String unit, long amount, double price) {
         this.productID = productID;
         this.unit = unit;
         this.amount = amount;
         this.price = price;
     }
 
-    public ProductInvoice(ProductInvoice other) {
+    public InvoiceProduct(InvoiceProduct other) {
         this.productID = other.productID;
         this.unit = other.unit;
         this.amount = other.amount;
@@ -35,7 +35,7 @@ public class ProductInvoice {
         System.out.print("Nhap ID san pham: ");
         productID = Tools.scan.nextLine();
         while (!Tools.isProductID(productID)) {
-            System.out.print("Nhap ID san pham: ");
+            System.out.print("Nhap ID san pham (Vd P01): ");
             productID = Tools.scan.nextLine();
         }
 
@@ -57,7 +57,7 @@ public class ProductInvoice {
         System.out.print("Nhap don gia: ");
         String pStr = Tools.scan.nextLine();
         while (!Tools.isDouble(pStr)) {
-            System.out.print("Nhap so luong: ");
+            System.out.print("Nhap don gia: ");
             pStr = Tools.scan.nextLine();
         }
         price = Double.parseDouble(pStr);

@@ -14,7 +14,7 @@ public class Invoice {
     private String date;
     private String prepareBy;
     private String receivedBy;
-    private ArrayList<ProductInvoice> productListInvoice;
+    private ArrayList<InvoiceProduct> productListInvoice;
     private double totalPrice;
 
 // --Constructor----------------------------------------------------------------    
@@ -31,7 +31,7 @@ public class Invoice {
         this.productListInvoice = new ArrayList<>();
     }
 
-    public Invoice(char iE, String invoiceID, String date, ArrayList<ProductInvoice> productListInvoice,
+    public Invoice(char iE, String invoiceID, String date, ArrayList<InvoiceProduct> productListInvoice,
             double totalPrice, String prepareBy, String receivedBy) {
         this.iE = iE;
         this.invoiceID = invoiceID;
@@ -59,7 +59,7 @@ public class Invoice {
             return false;
         }
 
-        ProductInvoice e = new ProductInvoice(productID, unit, amount, price);
+        InvoiceProduct e = new InvoiceProduct(productID, unit, amount, price);
         if (!productListInvoice.add(e)) {
             return false;
         }
@@ -69,7 +69,7 @@ public class Invoice {
 
 // --Console: Add more product to invoice--   
     public boolean addMoreProduct() {
-        ProductInvoice e = new ProductInvoice();
+        InvoiceProduct e = new InvoiceProduct();
         e.enter();
         if (!productListInvoice.add(e)) {
             return false;
@@ -89,7 +89,7 @@ public class Invoice {
         } while (iE != 'I' && iE != 'E');
 
         do {
-            System.out.print("Nhap ID hoa don: ");
+            System.out.print("Nhap ID hoa don (Vd I01, E01, ...): ");
             invoiceID = Tools.scan.nextLine();
         } while (!Tools.isInvoiceID(invoiceID));
 
@@ -99,19 +99,19 @@ public class Invoice {
         } while (!Tools.isDate(date));
 
         do {
-            System.out.print("Nguoi lap hoa don (ID nhan vien): ");
+            System.out.print("Nguoi lap hoa don (ID nhan vien vd staff01): ");
             prepareBy = Tools.scan.nextLine();
         } while (!Tools.isStaffID(prepareBy));
 
         if (iE == 'I') {
             do {
-                System.out.print("Nguoi nhan hoa don (ID nha cung cap): ");
+                System.out.print("Nguoi nhan hoa don (ID nha cung cap vd S01): ");
                 receivedBy = Tools.scan.nextLine();
             } while (!Tools.isSupplierID(receivedBy));
         }
         if (iE == 'E') {
             do {
-                System.out.print("Nguoi nhan hoa don (ID nha phan phoi): ");
+                System.out.print("Nguoi nhan hoa don (ID nha phan phoi vd D01): ");
                 receivedBy = Tools.scan.nextLine();
             } while (!Tools.isDistributorID(receivedBy));
         }
@@ -143,7 +143,7 @@ public class Invoice {
         System.out.println("Nhap tu: " + receivedBy);
         System.out.println(" _____________ _____________ ____________ ___________ ");
         System.out.println("| ID san pham | Don vi tinh |  So luong  |  Don gia  |");
-        for (ProductInvoice e : productListInvoice) {
+        for (InvoiceProduct e : productListInvoice) {
             e.display();
         }
         System.out.println(" _____________ _____________ ____________ ___________ ");
@@ -159,7 +159,7 @@ public class Invoice {
         System.out.println("Xuat cho: " + receivedBy);
         System.out.println(" _____________ _____________ ____________ ___________ ");
         System.out.println("| ID san pham | Don vi tinh |  So luong  |  Don gia  |");
-        for (ProductInvoice e : productListInvoice) {
+        for (InvoiceProduct e : productListInvoice) {
             e.display();
         }
         System.out.println(" _____________ _____________ ____________ ___________ ");
@@ -184,7 +184,7 @@ public class Invoice {
     @Override
     public String toString() {
         String temp = iE + "," + invoiceID + "," + date + "," + prepareBy + "," + receivedBy + ",";
-        for (ProductInvoice e : productListInvoice) {
+        for (InvoiceProduct e : productListInvoice) {
             temp = temp + e.toString() + ",";
         }
         temp += totalPrice + "\n";
@@ -232,26 +232,26 @@ public class Invoice {
         this.date = date;
     }
 
-    public ArrayList<ProductInvoice> getProductList() {
+    public ArrayList<InvoiceProduct> getProductList() {
         return productListInvoice;
     }
 
-    public void setProductList(ArrayList<ProductInvoice> productListInvoice) {
+    public void setProductList(ArrayList<InvoiceProduct> productListInvoice) {
         this.productListInvoice = productListInvoice;
         getTotalPrice();
     }
 
-    public ProductInvoice getProduct(int index) {
+    public InvoiceProduct getProduct(int index) {
         return productListInvoice.get(index);
     }
 
-    public void setProduct(int index, ProductInvoice element) {
+    public void setProduct(int index, InvoiceProduct element) {
         this.productListInvoice.set(index, element);
     }
 
     public double getTotalPrice() {
         double t = 0;
-        for (ProductInvoice e : productListInvoice) {
+        for (InvoiceProduct e : productListInvoice) {
             t += e.getAmount() * e.getPrice();
         }
         totalPrice = t;
