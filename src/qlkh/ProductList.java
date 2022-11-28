@@ -16,7 +16,7 @@ public class ProductList {
 	}
 
 	public ProductList() {
-//		product = new Product[this.size];
+		product = new Product[this.size];
 		try {
 			readFromFile();
 		} catch (Exception e) {
@@ -645,7 +645,7 @@ public class ProductList {
 				return false;
 			}
 			Scanner myReader = new Scanner(myObj);
-			product = new Product[this.size];
+//			product = new Product[this.size];
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
 				add(dataToObject(data));

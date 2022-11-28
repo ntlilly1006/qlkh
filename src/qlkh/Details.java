@@ -37,7 +37,7 @@ public class Details implements Serializable {
 		this.color = Tools.scan.nextLine();
 		this.sizeScreen = Tools.isSize();
 		this.weight = Tools.isWeight();
-		Tools.scan.nextLine();
+
 		return 0;
 	}
 
