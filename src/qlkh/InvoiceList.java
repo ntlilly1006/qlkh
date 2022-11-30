@@ -64,17 +64,17 @@ public class InvoiceList {
         } catch (FileNotFoundException ex) {
             // --Default init--
             Invoice e1 = new Invoice('I', "I01", "11/11/2022", "staff01", "S01");
-            e1.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
-            e1.addMoreProduct("P03", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
-            e1.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
-            e1.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e1.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
+            e1.addMoreProduct("P03", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
+            e1.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
+            e1.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             invoiceList.add(e1);
             
             Invoice e2 = new Invoice('I', "I02", "12/11/2022", "staff02", "S03");
-            e2.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
-            e2.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
-            e2.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
-            e2.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
+            e2.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
+            e2.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
+            e2.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
+            e2.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             invoiceList.add(e2);
             
             Invoice e3 = new Invoice('I', "I03", "14/11/2022", "staff01", "S05");
@@ -296,7 +296,7 @@ public class InvoiceList {
         }
         System.out.println("---TAT CA HOA DON---");
         System.out.println(" _______________ _____________ __________ ______________ _______________ ");
-        System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  |");
+        System.out.println("|   Ma hoa don  |  Thoi gian  |   Loai   |   Nguoi lap  |   Nguoi nhan  | Tong gia tri |");
         for (Invoice e : invoiceList) {
             e.display();
         }
@@ -490,13 +490,11 @@ public class InvoiceList {
         System.out.println("---TRUY XUAT HOA DON---");
         System.out.println("0. Quay lai");
         System.out.println("1. Xem danh sach hoa don");
-        System.out.println("2. Them hoa don moi");
-        System.out.println("3. Xoa hoa don");
-        System.out.println("4. Thoat");
-        System.out.print("Vui long nhap 1 so (0->4): ");
+        System.out.println("2. Thoat");
+        System.out.print("Vui long nhap 1 so (0->2): ");
         String option = Tools.scan.nextLine();
         while (!Tools.isInteger(option) || Integer.parseInt(option) < 0 || Integer.parseInt(option) > 4) {
-            System.out.print("Vui long nhap 1 so (0->4): ");
+            System.out.print("Vui long nhap 1 so (0->2): ");
             option = Tools.scan.nextLine();
         }
         switch (Integer.parseInt(option)) {
@@ -508,16 +506,6 @@ public class InvoiceList {
                 break;
             }
             case 2: {
-                add();
-                Tools.continute();
-                break;
-            }
-            case 3: {
-                remove();
-                Tools.continute();
-                break;
-            }
-            case 4: {
                 System.exit(1);
             }
         }

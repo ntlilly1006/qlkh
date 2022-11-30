@@ -177,7 +177,8 @@ public class Invoice {
 
 // --Console: Display table--   
     public void display() {
-        System.out.printf("|   %-12s| %-12s|   %-7s| %-13s| %-14s|\n", invoiceID, date, (iE == 'I') ? "Nhap" : "Xuat", prepareBy, receivedBy);
+        getTotalPrice();
+        System.out.printf("|   %-12s| %-12s|   %-7s| %-13s| %-14s| %-13s|\n", invoiceID, date, (iE == 'I') ? "Nhap" : "Xuat", prepareBy, receivedBy, totalPrice);
     }
 
 // --String to write to file--

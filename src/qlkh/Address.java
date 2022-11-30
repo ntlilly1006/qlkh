@@ -1,8 +1,13 @@
 package qlkh;
+
 import java.util.Scanner;
 
+
+
 public class Address {
+
     Scanner sc = new Scanner(System.in);
+
     private int apartmentNumber;
     private String streetName;
     private String wardCommune;
