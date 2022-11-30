@@ -6,14 +6,7 @@ public class SmartWatch extends Product {
 	public SmartWatch(String id, String name, String brand, String manufacturingDate, String unit, long amount,
 			double price, String graphics, String cpu, String sizeMemory, String color, double sizeScreen,
 			double weight) {
-		this.id = id;
-		this.name = name;
-		this.type = "SmartWatch";
-		this.brand = brand;
-		this.manufacturingDate = manufacturingDate;
-		this.unit = unit;
-		this.amount = amount;
-		this.price = price;
+		super(id, name, "SmartWatch", brand, manufacturingDate, unit, amount, price);
 		this.detail = new Details(graphics, cpu, sizeMemory, color, sizeScreen, weight);
 	}
 
@@ -28,9 +21,9 @@ public class SmartWatch extends Product {
 		return 0;
 	}
 
-	public void title() {
-		super.title();
-		detail.title();
+	public static void title() {
+		Product.title();
+		Details.title();
 	}
 
 	@Override

@@ -56,10 +56,10 @@ public class Product implements Comparable<Product> {
 		return 0;
 	}
 
-	public void title() {
+	public static void title() {
 		System.out.printf("%-11s%-18s%-18s%-20s%-22s%-20s%-17s%-20s", "Id", "Ten", "Phan loai", "Thuong hieu",
 				"Ngay san xuat", "Don vi tinh", "So luong", "Gia");
-		detail.title();
+		Details.title();
 	}
 
 	public void display() {

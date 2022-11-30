@@ -400,6 +400,7 @@ public class ProductList {
 			System.out.println("Khong co san pham nao trong danh sach");
 			return;
 		}
+		Product.title();
 		for (int i = 0; i < product.length; i++) {
 			product[i].display();
 		}

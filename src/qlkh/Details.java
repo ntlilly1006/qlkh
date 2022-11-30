@@ -42,7 +42,7 @@ public class Details implements Serializable {
 	}
 
 //-----Xuat thong tin----------------------------------------------------------------
-	public void title() {
+	public static void title() {
 		System.out.printf("%-18s%-20s%-22s%-15s%-20s%-20s\n", "Graphics", "Cpu", "Size of Memory", "Color",
 				"Size of screen", "Weight");
 	}
