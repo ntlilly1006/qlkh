@@ -10,7 +10,7 @@ import java.util.*;
 public class Manager {
 
     public PositionList positionList;
-    public ProductList productList;
+    public ProductIF productList;
     public InvoiceList invoiceList;
     private ArrayList<ContainLink> linkList;
     private String filePath = "ContainLinkList.txt";
@@ -34,7 +34,7 @@ public class Manager {
                 String line = scanFile.nextLine();
                 String[] E = null;
                 if (line != null) {
-                    E = line.split(",", 2);
+                    E = line.split(",");
                 }
                 if (E.length >= 5) {
                     if (Tools.isPositionID(E[0]) && Tools.isProductID(E[1]) && Tools.isLong(E[2]) && Tools.isDate(E[3])) {
@@ -45,7 +45,7 @@ public class Manager {
                     }
                 }
             }
-        } catch (FileNotFoundException ex) {
+        } catch (Exception ex) {
             // --Default init--
             addLink("A01", "P01", 12, "06/10/2022");
             addLink("A02", "P02", 12, "06/10/2022");
@@ -60,7 +60,7 @@ public class Manager {
                 if (fileInputStream != null) {
                     fileInputStream.close();
                 }
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 System.out.println("---Da xay ra loi---");
             }
         }
@@ -79,7 +79,7 @@ public class Manager {
         this.invoiceList = other.invoiceList;
         this.linkList = new ArrayList<>(other.linkList);
     }
-
+    
 // --Private--------------------------------------------------------------------
 // --Add new link and write to file--    
     private boolean addLink(String posID, String productID, long amount, String inputDate) {
@@ -274,22 +274,19 @@ public class Manager {
 
             // --Get product index--
             int proIndex = productList.findIndex(productID);
-            long amount;
             if (-1 == proIndex) {
                 System.out.println("San pham nhap lan dau. Vui long nhap thong tin san pham.");
                 productList.add();
                 proIndex = productList.findIndex(productID);
-                amount = productList.get(proIndex).getAmount();
-                productList.get(proIndex).setAmount(0);
-            } else {
-                System.out.print("Nhap so luong nhap vao: ");
-                String aStr = Tools.scan.nextLine();
-                while (!Tools.isLong(aStr)) {
-                    System.out.print("Nhap so luong nhap vao: ");
-                    aStr = Tools.scan.nextLine();
-                }
-                amount = Long.parseLong(aStr);
             }
+            
+            System.out.print("Nhap so luong nhap vao: ");
+            String aStr = Tools.scan.nextLine();
+            while (!Tools.isLong(aStr)) {
+                System.out.print("Nhap so luong nhap vao: ");
+                aStr = Tools.scan.nextLine();
+            }
+            long amount = Long.parseLong(aStr);
 
             System.out.print("Nhap ID ke chua: ");
             String positionID = Tools.scan.nextLine();
@@ -542,9 +539,12 @@ public class Manager {
                     if (!i.getStatus()) {
                         check = true;
                         int index = findLinkByPosition(i.getID(), true);
-                        ContainLink e = linkList.get(index);
-                        e.enterInventory();
-                        linkList.set(index, e);
+                        ContainLink e = null;
+                        if (index != -1) {
+                            e = linkList.get(index);
+                            e.enterInventory();
+                            linkList.set(index, e);
+                        }
                     }
                 }
 
@@ -612,7 +612,7 @@ public class Manager {
         this.positionList = positionList;
     }
 
-    public ProductList getProductList() {
+    public ProductIF getProductList() {
         return productList;
     }
 

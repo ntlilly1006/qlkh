@@ -1,46 +1,47 @@
 package qlkh;
 
 public class SmartPhone extends Product {
-	private Details detail = null;
 
-	public SmartPhone(String id, String name, String brand, String manufacturingDate, String unit, long amount,
-			double price, String graphics, String cpu, String sizeMemory, String color, double sizeScreen,
-			double weight) {
-		super(id, name, "SmartPhone", brand, manufacturingDate, unit, amount, price);
-		this.detail = new Details(graphics, cpu, sizeMemory, color, sizeScreen, weight);
-	}
+    private Details detail = null;
 
-	public SmartPhone() {
-		this.detail = new Details();
-		this.type = "SmartPhone";
-	}
+    public SmartPhone(String id, String name, String brand, String manufacturingDate, String unit, long amount,
+            double price, String graphics, String cpu, String sizeMemory, String color, double sizeScreen,
+            double weight) {
+        super(id, name, "SmartPhone", brand, manufacturingDate, unit, amount, price);
+        this.detail = new Details(graphics, cpu, sizeMemory, color, sizeScreen, weight);
+    }
 
-	public int enter() {
-		super.enter();
-		detail.enter();
-		return 0;
-	}
+    public SmartPhone() {
+        this.detail = new Details();
+        this.type = "SmartPhone";
+    }
 
-	public static void title() {
-		Product.title();
-		Details.title();
-	}
+    public int enter() {
+        super.enter();
+        detail.enter();
+        return 0;
+    }
 
-	@Override
-	public String toString() {
-		return super.toString() + detail.toString();
-	}
+    public static void title() {
+        Product.title();
+        Details.title();
+    }
 
-	public void display() {
-		super.display();
-		detail.display();
-	}
+    @Override
+    public String toString() {
+        return super.toString() + detail.toString();
+    }
 
-	public Details getDetail() {
-		return detail;
-	}
+    public void display() {
+        super.display();
+        detail.display();
+    }
 
-	public void setDetail(Details detail) {
-		this.detail = detail;
-	}
+    public Details getDetail() {
+        return detail;
+    }
+
+    public void setDetail(Details detail) {
+        this.detail = detail;
+    }
 }

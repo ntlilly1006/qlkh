@@ -1,7 +1,6 @@
 package qlkh;
 
 import java.io.Serializable;
-import java.util.Scanner;
 
 public class Details implements Serializable {
 

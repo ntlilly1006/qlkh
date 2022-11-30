@@ -1,5 +1,0 @@
-id: P01, name: Macbook M1, type: SmartWatch, brand: Apple, manufacturingDate: 12/12/2003, unit: Chiec, amount: 12, price: 12.0, graphics: Nvidia, cpu: Ryzon, sizeMemory: 256gb, color: Trang, sizeScreen: 13.3, weight: 2.0.
-id: P02, name: Dell Latitude, type: LapTop, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 12, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 256gb, color: Xanh, sizeScreen: 13.3, weight: 2.0.
-id: P03, name: Dell Inspiron, type: LapTop, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 20, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 256gb, color: Den, sizeScreen: 13.3, weight: 2.0.
-id: P04, name: HP Pavilion, type: SmartPhone, brand: Dell, manufacturingDate: 12/9/2000, unit: Cai, amount: 4, price: 12.0, graphics: Gtx, cpu: Intel, sizeMemory: 256gb, color: Trang, sizeScreen: 13.3, weight: 2.0.
-id: P05, name: Dell Latitude, type: LapTop, brand: Dell, manufacturingDate: 12/10/2003, unit: Cai, amount: 1, price: 12.0, graphics: Nvidia, cpu: Intel, sizeMemory: 512Gb, color: Vang, sizeScreen: 15.6, weight: 3.0.

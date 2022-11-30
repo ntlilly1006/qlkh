@@ -191,6 +191,30 @@ public class Tools {
 		return true;
 	}
 
+	// PhoneNumber
+    public static boolean isPhoneNumber(String phoneNumber){
+        if (phoneNumber.length() != 10) {
+            return false;
+        }
+
+        if (!isInteger(phoneNumber)){
+            return false;
+        }
+
+        if (phoneNumber.charAt(0) != '0') {
+            return false;
+        }
+
+        return true;
+    }
+    
+    // Position in Staff class
+    public static boolean isPosition(String position){
+        if (!position.equals("Quan ly") && !position.equals("Nhan vien"))
+            return false;
+        return true;
+    }
+
 	// --Unit--Cai-Chiec--
 	public static boolean isUnit(String unit) {
 

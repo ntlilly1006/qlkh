@@ -11,7 +11,7 @@ public class Product implements Comparable<Product> {
 	protected String brand; // thương hiệu
 	protected String manufacturingDate;// ngày sản xuất
 	protected String unit; // đơn vị tính
-	protected long amount; // số lượng tổng
+	protected long amount = 0; // số lượng tổng
 	protected double price; // giá thành
 	Details detail = new Details();
 
