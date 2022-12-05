@@ -116,21 +116,18 @@ public class Invoice {
             } while (!Tools.isDistributorID(receivedBy));
         }
 
-        System.out.println("Nhap tong so san pham trong danh sach:");
-        String nStr = Tools.scan.nextLine();
-        while (!Tools.isInteger(nStr)) {
-            System.out.println("Nhap tong so san pham trong danh sach:");
-            nStr = Tools.scan.nextLine();
-        }
-        int n = Integer.parseInt(nStr);
         System.out.println("Nhap thong tin san pham:");
-        for (int i = 0; i < n;) {
-            System.out.println(i + ")");
+        String hasNext = "Y";
+        while (!hasNext.startsWith("N")) {
             if (addMoreProduct()) {
-                i++;
+                System.out.print("Them san pham (Y/N)? ");
+                hasNext = Tools.scan.nextLine();
+                while (!(hasNext.startsWith("N") && hasNext.startsWith("Y"))) {
+                    System.out.print("Them san pham (Y/N)? ");
+                    hasNext = Tools.scan.nextLine();
+                }
             }
         }
-
         System.out.println("Tong gia tri hoa don: " + totalPrice);
     }
 

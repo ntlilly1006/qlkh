@@ -9,6 +9,8 @@ import java.util.*;
  */
 public class InvoiceList {
 
+    private String nextImportID = "I00";
+    private String nextExportID = "E00";
     private ArrayList<Invoice> invoiceList;
     private String filePath = "InvoiceList.txt";
 
@@ -58,6 +60,10 @@ public class InvoiceList {
                             }
                         }
                         add(element);
+                        if (iE == 'I')
+                            getNextImportID();
+                        if (iE == 'E')
+                            getNextExportID();
                     }
                 }
             }
@@ -69,60 +75,61 @@ public class InvoiceList {
             e1.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             e1.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             invoiceList.add(e1);
-            
+
             Invoice e2 = new Invoice('I', "I02", "12/11/2022", "staff02", "S03");
             e2.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             e2.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             e2.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             e2.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 3001) + 1);
             invoiceList.add(e2);
-            
+
             Invoice e3 = new Invoice('I', "I03", "14/11/2022", "staff01", "S05");
             e3.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e3.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e3.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e3);
-            
+
             Invoice e4 = new Invoice('I', "I04", "17/11/2022", "staff02", "S09");
             e4.addMoreProduct("P09", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e4.addMoreProduct("P10", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e4);
-            
+
             Invoice e5 = new Invoice('I', "I05", "19/11/2022", "staff01", "S07");
             e5.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e5.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e5.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e5);
-            
+
             Invoice e6 = new Invoice('E', "E01", "13/11/2022", "staff02", "D02");
             e6.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e6.addMoreProduct("P05", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e6.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e6);
-            
+
             Invoice e7 = new Invoice('E', "E02", "15/11/2022", "staff01", "D04");
             e7.addMoreProduct("P04", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e7.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e7);
-            
+
             Invoice e8 = new Invoice('E', "E03", "18/11/2022", "staff02", "D06");
             e8.addMoreProduct("P02", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e8.addMoreProduct("P03", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e8.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e8.addMoreProduct("P09", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e7);
-            
+
             Invoice e9 = new Invoice('E', "E04", "20/11/2022", "staff01", "D03");
             e9.addMoreProduct("P08", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e9.addMoreProduct("P10", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e9);
-            
+
             Invoice e10 = new Invoice('E', "E05", "21/11/2022", "staff02", "D07");
             e10.addMoreProduct("P01", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e10.addMoreProduct("P06", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             e10.addMoreProduct("P07", "Cai", Math.round(Math.random() * 101) + 1, Math.round(Math.random() * 30000001) + 1);
             invoiceList.add(e10);
-            
+            nextImportID = "I05";
+            nextExportID = "E05";
             writeToFile();
         } finally {
             try {
@@ -215,7 +222,7 @@ public class InvoiceList {
             return false;
         }
         writeToFile();
-        return false;
+        return true;
     }
 
 // --Console: Add new invoice--
@@ -544,6 +551,42 @@ public class InvoiceList {
     }
 
 // --Getter-Setter--------------------------------------------------------------
+    public String getNextImportID() {
+        int temp = Integer.parseInt(nextImportID.substring(1));
+        temp++;
+
+        if (temp < 10) {
+            nextImportID = "I0";
+        } else {
+            nextImportID = "I";
+        }
+        nextImportID += Integer.toString(temp);
+
+        return nextImportID;
+    }
+
+    public void setNextImportID(String nextImportID) {
+        this.nextImportID = nextImportID;
+    }
+
+    public String getNextExportID() {
+        int temp = Integer.parseInt(nextExportID.substring(1));
+        temp++;
+
+        if (temp < 10) {
+            nextExportID = "E0";
+        } else {
+            nextExportID = "E";
+        }
+        nextExportID += Integer.toString(temp);
+
+        return nextExportID;
+    }
+
+    public void setNextExportID(String nextExportID) {
+        this.nextExportID = nextExportID;
+    }
+
     public ArrayList<Invoice> getInvoiceList() {
         return invoiceList;
     }

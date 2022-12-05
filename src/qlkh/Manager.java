@@ -79,7 +79,7 @@ public class Manager {
         this.invoiceList = other.invoiceList;
         this.linkList = new ArrayList<>(other.linkList);
     }
-    
+
 // --Private--------------------------------------------------------------------
 // --Add new link and write to file--    
     private boolean addLink(String posID, String productID, long amount, String inputDate) {
@@ -154,6 +154,18 @@ public class Manager {
         writeToFile();
         return true;
     }
+    
+// --Active Link Count--
+    public int countActiveLink() {
+        int n = 0;
+        for (ContainLink i : linkList) {
+            if (i.getStatus()) {
+                n++;
+            }
+        }
+        return n;
+    }
+
 
 // --Console: Display inventory list--
     private void showInventoryList() {
@@ -201,7 +213,7 @@ public class Manager {
 
 // -----------------------------------------------------------------------------    
 // --Console: Import--
-    public boolean importPD() {
+    public boolean importPD(String respond) {
         Tools.cls();
         System.out.println("---NHAP HANG---");
         System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
@@ -218,13 +230,6 @@ public class Manager {
             from = Tools.scan.nextLine();
         }
 
-        System.out.print("ID nhan vien: ");
-        String respond = Tools.scan.nextLine();
-        while (!Tools.isStaffID(respond)) {
-            System.out.print("ID nhan vien (Vd staff01): ");
-            respond = Tools.scan.nextLine();
-        }
-
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
         char option = Tools.scan.nextLine().charAt(0);
         while (option != 'N' && option != 'Y') {
@@ -233,38 +238,20 @@ public class Manager {
         }
         Invoice invoice = null;
         if (option == 'Y') {
-            System.out.print("Nhap ID hoa don: ");
-            String invoiceID = Tools.scan.nextLine();
-            while (!Tools.isInvoiceID(invoiceID) || invoiceList.isExist(invoiceID) || !invoiceID.startsWith("I")) {
-                if (!invoiceID.startsWith("I")) {
-                    System.out.println("---Khong phai ID hoa don nhap---");
-                } else if (invoiceList.isExist(invoiceID)) {
-                    System.out.println("---ID da ton tai---");
-                }
-                System.out.print("Nhap ID hoa don (Vd I01): ");
-                invoiceID = Tools.scan.nextLine();
-            }
-            invoice = new Invoice('I', invoiceID, date, respond, from);
+            invoice = new Invoice('I', invoiceList.getNextImportID(), date, respond, from);
         }
-
-        System.out.print("Nhap tong so san pham nhap vao: ");
-        String nStr = Tools.scan.nextLine();
-        while (!Tools.isInteger(nStr)) {
-            System.out.print("Nhap tong so san pham nhap vao: ");
-            nStr = Tools.scan.nextLine();
-        }
-        int n = Integer.parseInt(nStr);
 
         // --Check position list--
-        if (positionList.countEmptyPosition() < n) {
-            System.out.println("---KHONG DU NOI CHUA---");
+        int i = 0;
+        int n = positionList.countEmptyPosition();
+        if (n <= 0) {
+            System.out.println("---KHO HANG DA DAY---");
             return false;
         }
 
         System.out.println("Nhap thong tin san pham:");
-        for (int i = 1; i <= n; i++) {
-            System.out.println("(" + i + ")");
-
+        String hasNext = "Y";
+        while (!hasNext.startsWith("N") && (i < n)) {
             System.out.print("Nhap ID san pham: ");
             String productID = Tools.scan.nextLine();
             while (!Tools.isProductID(productID)) {
@@ -279,7 +266,7 @@ public class Manager {
                 productList.add();
                 proIndex = productList.findIndex(productID);
             }
-            
+
             System.out.print("Nhap so luong nhap vao: ");
             String aStr = Tools.scan.nextLine();
             while (!Tools.isLong(aStr)) {
@@ -307,9 +294,20 @@ public class Manager {
                 if (invoice != null) {
                     invoice.addMoreProduct(productID, productList.get(proIndex).getUnit(), amount, productList.get(proIndex).getPrice());
                 }
+                i++;
                 System.out.println("---Nhap thanh cong---");
             } else {
                 System.out.println("---Nhap khong thanh cong---");
+            }
+            if (i < n) {
+                System.out.print("Them san pham (Y/N)? ");
+                hasNext = Tools.scan.nextLine();
+                while (!hasNext.startsWith("N") && !hasNext.startsWith("Y")) {
+                    System.out.print("Them san pham (Y/N)? ");
+                    hasNext = Tools.scan.nextLine();
+                }
+            } else {
+                System.out.println("---KHO HANG DA DAY---");
             }
         }
         if (invoice != null) {
@@ -320,7 +318,7 @@ public class Manager {
     }
 
 // --Console: Export--    
-    public boolean exportPD() {
+    public boolean exportPD(String respond) {
         Tools.cls();
         System.out.println("---XUAT HANG---");
         System.out.print("Nhap ngay thang nam (dd/mm/yyyy): ");
@@ -337,13 +335,6 @@ public class Manager {
             to = Tools.scan.nextLine();
         }
 
-        System.out.print("ID nhan vien: ");
-        String respond = Tools.scan.nextLine();
-        while (!Tools.isStaffID(respond)) {
-            System.out.print("ID nhan vien (Vd staff01): ");
-            respond = Tools.scan.nextLine();
-        }
-
         System.out.print("Co xuat hoa don khong (Y/N) ? ");
         char option = Tools.scan.nextLine().charAt(0);
         if (option != 'N' && option != 'Y') {
@@ -352,38 +343,16 @@ public class Manager {
         }
         Invoice invoice = null;
         if (option == 'Y') {
-            System.out.print("Nhap ID hoa don: ");
-            String invoiceID = Tools.scan.nextLine();
-            while (!Tools.isInvoiceID(invoiceID) || invoiceList.isExist(invoiceID) || !invoiceID.startsWith("E")) {
-                if (!invoiceID.startsWith("E")) {
-                    System.out.println("---Khong phai ID hoa don xuat---");
-                } else if (invoiceList.isExist(invoiceID)) {
-                    System.out.println("---ID da ton tai---");
-                }
-                System.out.print("Nhap ID hoa don (Vd E01): ");
-                invoiceID = Tools.scan.nextLine();
-            }
-            invoice = new Invoice('E', invoiceID, date, respond, to);
+            invoice = new Invoice('E', invoiceList.getNextExportID(), date, respond, to);
         }
-
-        System.out.print("Nhap tong so san pham xuat di: ");
-        String nStr = Tools.scan.nextLine();
-        while (!Tools.isInteger(nStr)) {
-            System.out.print("Nhap tong so san pham xuat di: ");
-            nStr = Tools.scan.nextLine();
-        }
-        int n = Integer.parseInt(nStr);
-
-        // --Check--
-        if (positionList.countEmptyPosition() < n) {
-            System.out.println("---KHONG DU SAN PHAM---");
+        if (countActiveLink() <= 0) {
+            System.out.println("---KHO HANG DANG TRONG---");
             return false;
         }
 
-        System.out.println("Nhap thong tin san pham:");
-        for (int i = 1; i <= n; i++) {
-            System.out.println("(" + i + ")");
-
+        System.out.println("Nhap thong tin san pham xuat di:");
+        String hasNext = "Y";
+        while (!hasNext.startsWith("N") && countActiveLink() > 0) {
             System.out.print("Nhap ID san pham: ");
             String productID = Tools.scan.nextLine();
             while (!Tools.isProductID(productID)) {
@@ -417,8 +386,18 @@ public class Manager {
                     invoice.addMoreProduct(productID, productList.get(proIndex).getUnit(), amount, productList.get(proIndex).getPrice());
                 }
                 disableLink(productID, amount);
-
                 System.out.println("---Xuat thanh cong---");
+            }
+            if (countActiveLink() > 0) {
+                System.out.print("Them san pham (Y/N)? ");
+                hasNext = Tools.scan.nextLine();
+                while (!(hasNext.startsWith("N") && hasNext.startsWith("Y"))) {
+                    System.out.print("Them san pham (Y/N)? ");
+                    hasNext = Tools.scan.nextLine();
+                }
+            } else {
+                System.out.println("---KHO HANG DA TRONG---");
+                break;
             }
         }
         if (invoice != null) {

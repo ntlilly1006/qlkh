@@ -1,70 +1,74 @@
 package qlkh;
+
 import java.io.*;
+
 /**
  * PositionID: A01 - Z99 ProductID: P01 - P99 InvoiceID: I01 - I99 / E01 - E99
  * StaffID: staff01 - staff99 SupplierID: S01 - S99 DistributorID: D01 - D99
- * 
+ *
  * @author Lilly
  */
 public class Main {
-    static File accountFile = new File("Account.txt");
-    static File staffFile = new File("Staff.txt");
-    static File staffAddressFile = new File("Staff-address.txt");
-    
+
+    final static File accountFile = new File("Account.txt");
+    final static File staffFile = new File("Staff.txt");
+    final static File staffAddressFile = new File("Staff-address.txt");
+
     public static void main(String[] args) {
         Tools.cls();
         Manager manager = new Manager();
         AccountList accountList = new AccountList();
         StaffList staffList = new StaffList();
+        Account loginAccount = new Account();
         accountList.createList(accountFile);
         staffList.createList(staffFile, staffAddressFile);
 
-        while(true){
+        while (true) {
             Tools.cls();
             System.out.println("---HE THONG QUAN LY KHO HANG THIET BI DIEN TU---");
 
-            Boolean loginCheck = login(accountList);
-            System.out.println(loginCheck);
-            if (Boolean.TRUE.equals(loginCheck)){
-                adminMenu(manager, accountList, staffList);
-            }
-            else{
-                staffMenu(manager, accountList, staffList);
+            Boolean loginCheck = login(accountList, loginAccount);
+            loginAccount.setStaffID(accountList.getStaffID(loginAccount));
+            System.out.println(loginAccount);
+            if (Boolean.TRUE.equals(loginCheck)) {
+                adminMenu(manager, accountList, staffList, loginAccount);
+            } else {
+                staffMenu(manager, accountList, staffList, loginAccount);
             }
         }
     }
 
-    public static boolean login(AccountList accountList){
+    public static boolean login(AccountList accountList, Account loginAccount) {
 
-        System.out.println("--Dang nhap");       
+        System.out.println("--Dang nhap");
         System.out.print("Tai khoan: ");
         String accountName = Tools.scan.nextLine();
         System.out.print("Mat khau: ");
         String password = Tools.scan.nextLine();
+        loginAccount.setAccountName(accountName);
+        loginAccount.setPassword(password);
 
-        Account loginAccount = new Account(accountName, password);
-        boolean signInCheck=accountList.checkSignIn(loginAccount);
+        boolean signInCheck = accountList.checkSignIn(loginAccount);
 
-        while(!signInCheck){
-                System.out.println("Vui long kiem tra lai tai khoan hoac mat khau.");
-                System.out.print("Tai khoan: ");
-                accountName = Tools.scan.nextLine();
-                System.out.print("Mat khau: ");
-                password = Tools.scan.nextLine();
-                loginAccount = new Account(accountName, password);
-                signInCheck=accountList.checkSignIn(loginAccount);
+        while (!signInCheck) {
+            System.out.println("Vui long kiem tra lai tai khoan hoac mat khau.");
+            System.out.print("Tai khoan: ");
+            accountName = Tools.scan.nextLine();
+            System.out.print("Mat khau: ");
+            password = Tools.scan.nextLine();
+            loginAccount = new Account(accountName, password);
+            signInCheck = accountList.checkSignIn(loginAccount);
         }
 
-        loginAccount=accountList.giveLoginRoleID(loginAccount);
-        if (loginAccount instanceof AdminAccount){
+        loginAccount = accountList.giveLoginRoleID(loginAccount);
+        if (loginAccount instanceof AdminAccount) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
-    public static void adminMenu(Manager manager, AccountList accountList, StaffList staffList) {
+    public static void adminMenu(Manager manager, AccountList accountList, StaffList staffList, Account loginAccount) {
         Tools.cls();
         System.out.println("---QUAN TRI HE THONG KHO HANG---\n");
         System.out.println("1. Quan ly hang hoa");
@@ -73,39 +77,44 @@ public class Main {
         System.out.println("4. Thoat va luu\n");
         System.out.println("** WARNINGS: Phai chon \"Thoat va luu\" de luu cac thay doi ve nhan vien va tai khoan");
         String option = Tools.scan.nextLine();
-        while (!Tools.isInteger(option) || Integer.parseInt(option) < 1 || Integer.parseInt(option) > 4) {System.out.println("Vui long nhap lai: ");option = Tools.scan.nextLine();}
+        while (!Tools.isInteger(option) || Integer.parseInt(option) < 1 || Integer.parseInt(option) > 4) {
+            System.out.println("Vui long nhap lai: ");
+            option = Tools.scan.nextLine();
+        }
         switch (Integer.parseInt(option)) {
             case 1: {
-                warehouseMenu(manager);
+                warehouseMenu(manager, loginAccount.getAccountName());
                 Tools.continute();
                 break;
             }
             case 2: {
                 staffManagementMenu(accountList, staffList);
+                accountList.updataFile(accountFile);
+                staffList.updataFile(staffFile, staffAddressFile);
                 Tools.continute();
                 break;
             }
             case 3: {
-                System.out.print("Nhap lai ten tai khoan: ");
-                String accountName = Tools.scan.nextLine();
+                // System.out.print("Nhap lai ten tai khoan: ");
+                String accountName = loginAccount.getAccountName();
                 System.out.print("Nhap mat khau cu: ");
                 String oldPassword = Tools.scan.nextLine();
                 System.out.print("Nhap mat khau moi: ");
                 String newPassword = Tools.scan.nextLine();
                 accountList.changePassword(accountName, oldPassword, newPassword);
+                accountList.updataFile(accountFile);
+                staffList.updataFile(staffFile, staffAddressFile);
                 Tools.continute();
                 break;
             }
             case 4: {
-                accountList.updataFile(accountFile);
-                staffList.updataFile(staffFile, staffAddressFile);
                 return;
             }
         }
-        adminMenu(manager, accountList, staffList);
+        adminMenu(manager, accountList, staffList, loginAccount);
     }
 
-    public static void staffMenu(Manager manager, AccountList accountList, StaffList staffList) {
+    public static void staffMenu(Manager manager, AccountList accountList, StaffList staffList, Account loginAccount) {
         Tools.cls();
         System.out.println("---QUAN TRI HE THONG KHO HANG DANH CHO NHAN VIEN---\n");
         System.out.println("1. Quan ly hang hoa");
@@ -113,34 +122,37 @@ public class Main {
         System.out.println("3. Thoat va luu\n");
         System.out.println("** WARNINGS: Phai chon \"Thoat va luu\" de luu cac thay doi ve nhan vien va tai khoan");
         String option = Tools.scan.nextLine();
-        while (!Tools.isInteger(option) || Integer.parseInt(option) < 1 || Integer.parseInt(option) > 3) {System.out.println("Vui long nhap lai: ");option = Tools.scan.nextLine();}
+        while (!Tools.isInteger(option) || Integer.parseInt(option) < 1 || Integer.parseInt(option) > 3) {
+            System.out.println("Vui long nhap lai: ");
+            option = Tools.scan.nextLine();
+        }
         switch (Integer.parseInt(option)) {
             case 1: {
-                warehouseMenu(manager);
+                warehouseMenu(manager, loginAccount.getAccountName());
                 Tools.continute();
                 break;
             }
-        
+
             case 2: {
-                System.out.print("Nhap lai ten tai khoan: ");
-                String accountName = Tools.scan.nextLine();
+                // System.out.print("Nhap lai ten tai khoan: ");
+                String accountName = loginAccount.getAccountName();
                 System.out.print("Nhap mat khau cu: ");
                 String oldPassword = Tools.scan.nextLine();
                 System.out.print("Nhap mat khau moi: ");
                 String newPassword = Tools.scan.nextLine();
                 accountList.changePassword(accountName, oldPassword, newPassword);
+                staffList.updataFile(staffFile, staffAddressFile);
                 Tools.continute();
                 break;
             }
             case 3: {
-                staffList.updataFile(staffFile, staffAddressFile);
                 return;
             }
         }
-        staffMenu(manager, accountList, staffList);
+        staffMenu(manager, accountList, staffList, loginAccount);
     }
 
-    public static void staffManagementMenu(AccountList accountList, StaffList staffList){
+    public static void staffManagementMenu(AccountList accountList, StaffList staffList) {
         Tools.cls();
         System.out.println("---QUAN LY NHAN VIEN VA TAI KHOAN---");
         System.out.println("1. Them nhan vien");
@@ -156,17 +168,17 @@ public class Main {
 
         String option = Tools.scan.nextLine();
         while (!Tools.isInteger(option) || Integer.parseInt(option) < 1 || Integer.parseInt(option) > 10) {
-            System.out.println("Vui long nhap lai: "); option = Tools.scan.nextLine();
+            System.out.println("Vui long nhap lai: ");
+            option = Tools.scan.nextLine();
         }
         switch (Integer.parseInt(option)) {
             case 1: {
                 System.out.println("--Nhap nhan vien moi");
-                Staff newStaff= new Staff();
+                Staff newStaff = new Staff();
                 newStaff.input();
-                if (!staffList.checkStaff(newStaff.getStaffID())){
+                if (!staffList.checkStaff(newStaff.getStaffID())) {
                     System.out.println("Ma nhan vien bi trung, vui long tao lai nhan vien");
-                }
-                else{
+                } else {
                     staffList.addStaff(newStaff);
                 }
                 Tools.continute();
@@ -182,19 +194,15 @@ public class Main {
             case 3: {
                 System.out.print("Nhap ma nhan vien can sua thong tin: ");
                 String staffID = Tools.scan.nextLine();
-                System.out.print("--Chinh sua nhan vien\n");
-                if(!staffList.adjustStaff(staffID)){
-                    System.out.println("Khong tim thay nhan vien.");
-                }
+                System.out.print("--Chinh sua nhan vien");
+                staffList.adjustStaff(staffID);
                 Tools.continute();
                 break;
             }
             case 4: {
                 System.out.print("Nhap ma nhan vien can tim: ");
                 String staffID = Tools.scan.nextLine();
-                if(!staffList.findStaff(staffID)){
-                    System.out.println("Khong tim thay nhan vien.");
-                }
+                staffList.findStaff(staffID);
                 Tools.continute();
                 break;
             }
@@ -206,9 +214,7 @@ public class Main {
             case 6: {
                 System.out.print("Nhap ten tai khoan can tim: ");
                 String accountID = Tools.scan.nextLine();
-                if(!accountList.findAccount(accountID)){
-                    System.out.println("Khong tim thay tai khoan.");
-                }
+                accountList.findAccount(accountID);
                 Tools.continute();
                 break;
             }
@@ -233,13 +239,14 @@ public class Main {
                 Tools.continute();
                 break;
             }
-            case 10:{
+            case 10: {
                 return;
             }
         }
         staffManagementMenu(accountList, staffList);
     }
-    public static void warehouseMenu(Manager manager) {
+
+    public static void warehouseMenu(Manager manager, String respond) {
         Tools.cls();
         System.out.println("---QUAN LY KHO HANG THIET BI DIEN TU---");
         System.out.println("1. Nhap hang");
@@ -257,12 +264,12 @@ public class Main {
         }
         switch (Integer.parseInt(option)) {
             case 1: {
-                manager.importPD();
+                manager.importPD(respond);
                 Tools.continute();
                 break;
             }
             case 2: {
-                manager.exportPD();
+                manager.exportPD(respond);
                 Tools.continute();
                 break;
             }
@@ -287,6 +294,6 @@ public class Main {
                 return;
             }
         }
-        warehouseMenu(manager);
+        warehouseMenu(manager, respond);
     }
 }
